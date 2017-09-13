@@ -1,0 +1,8 @@
+# IDE Dirs #
+.vscode/
+.vs/
+
+*.exe
+*.dll
+*.o
+*.so
