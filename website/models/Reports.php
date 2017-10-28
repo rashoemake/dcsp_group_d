@@ -7,21 +7,16 @@ class Reports {
 	public static $tablename = "reports";
 	
 	//Static Methods
-	public static get_report_by_id($id) {
+	public static function get_reports_by_id($id) {
 		//implement
 	}
 	
 	//(return an array of reports objects?)
-	public static get_reports_by_reporter($user_id_reporter) {
+	public static function get_reports_by_disabled() {
 		//implement
 	}
 	
-	//(return an array of reports objects?)
-	public static get_reports_by_reported($user_id_reported) {
-		//implement
-	}
-	
-	public static create_report($user_id_reporter, $user_id_reported, $message) {
+	public static function create_report($user_id_reporter, $user_id_reported, $message) {
 		//implement
 	}
 	
@@ -32,56 +27,64 @@ class Reports {
 	private $user_id_reported;
 	private $user_id_reporter;
 	private $message;
-	private $modifiedDate;
+	private $createdDate;
 	private $disabled;
 	
+	//Constructor
+	public function __construct($user_id_reporter, $user_id_reported, $message) {
+		//call database
+		//insert the above parameters into the dabase
+		//set disabled=0
+		//return instance variables from database and set them
+	}
+	
 	//Getters and Setters
-	public get_id() {
+	public function get_id() {
 		//implement
 	}
 	
-	private set_id() {
+	private function set_id() {
 		//implement
 	}
 	
-	public get_user_id_reported() {
+	public function get_user_id_reported() {
 		//implement
 	}
 	
-	private set_user_id_reported () {
+	private function set_user_id_reported () {
 		//implemented
 	}
 	
-	public get_user_id_reporter() {
+	public function get_user_id_reporter() {
 		//implement
 	}
 	
-	private set_user_id_reporter() {
+	private function set_user_id_reporter() {
 		//implement
 	}
 	
-	public get_message() {
+	public function get_message() {
 		//implement
 	}
 	
-	private set_message() {
+	private function set_message() {
 		//implement
 	}
 	
-	public get_disabled() {
+	public function get_disabled() {
 		//implement
 	}
 	
-	private set_disabled() {
+	private function set_disabled() {
 		//implement
 	}
 	
-	public get_modifiedDate() {
+	public function get_modifiedDate() {
 		//implement
 	}
 	
 	//Instance Methods
-	public update_disabled($disabled) {
+	public function update_disabled($disabled) {
 		//implement
 	}	
 }
