@@ -7,35 +7,32 @@ class Reports {
 	public static $tablename = "reports";
 	
 	//Static Methods
-	public static function get_reports_by_id($id) {
-		//implement
-	}
-	
-	//(return an array of reports objects?)
-	public static function get_reports_by_disabled() {
-		//implement
-	}
-	
 	public static function create_report($user_id_reporter, $user_id_reported, $message) {
 		//implement
 	}
+	
+	public static function get_reports_by_reported_id($reported_id) {
+		//implement
+	}
+	
+	public static function get_reports_by_disabled($disabled) {
+		//implement
+	}
+	
 	
 	/* INSTANCE MEMBERS */
 	
 	//Instance Variables
 	private $id;
 	private $user_id_reported;
-	private $user_id_reporter;
+	private $user_id_reporter
 	private $message;
 	private $createdDate;
 	private $disabled;
 	
 	//Constructor
 	public function __construct($user_id_reporter, $user_id_reported, $message) {
-		//call database
-		//insert the above parameters into the dabase
-		//set disabled=0
-		//return instance variables from database and set them
+		//calls setter methods for validation
 	}
 	
 	//Getters and Setters
@@ -43,7 +40,7 @@ class Reports {
 		//implement
 	}
 	
-	private function set_id() {
+	private function set_id($id) {
 		//implement
 	}
 	
@@ -51,7 +48,7 @@ class Reports {
 		//implement
 	}
 	
-	private function set_user_id_reported () {
+	private function set_user_id_reported ($user_id_reported) {
 		//implemented
 	}
 	
@@ -59,7 +56,7 @@ class Reports {
 		//implement
 	}
 	
-	private function set_user_id_reporter() {
+	private function set_user_id_reporter($user_id_reporter) {
 		//implement
 	}
 	
@@ -67,7 +64,7 @@ class Reports {
 		//implement
 	}
 	
-	private function set_message() {
+	private function set_message($message) {
 		//implement
 	}
 	
@@ -75,7 +72,7 @@ class Reports {
 		//implement
 	}
 	
-	private function set_disabled() {
+	private function set_disabled($disabled) {
 		//implement
 	}
 	
