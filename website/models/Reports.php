@@ -15,7 +15,7 @@ class Reports {
 		//implement
 	}
 	
-	public static function get_reports_by_disabled($disabled) {
+	public static function get_reports_by_handled($handled) {
 		//implement
 	}
 	
@@ -28,7 +28,7 @@ class Reports {
 	private $user_id_reporter
 	private $message;
 	private $createdDate;
-	private $disabled;
+	private $handled;
 	
 	//Constructor
 	public function __construct($user_id_reporter, $user_id_reported, $message) {
@@ -68,11 +68,11 @@ class Reports {
 		//implement
 	}
 	
-	public function get_disabled() {
+	public function get_handled() {
 		//implement
 	}
 	
-	private function set_disabled($disabled) {
+	private function set_handled($handled) {
 		//implement
 	}
 	
@@ -81,7 +81,7 @@ class Reports {
 	}
 	
 	//Instance Methods
-	public function update_disabled($disabled) {
+	public function update_handled($handled) {
 		//implement
 	}	
 }
