@@ -1,28 +1,28 @@
 <?php
 
-class Reports {
+class Report {
 	/* STATIC MEMBERS */
 	
-	//Staic Variables
+	// Static Variables
 	public static $tablename = "reports";
 	
-	//Static Methods
+	// Static Methods
 	public static function create_report($user_id_reporter, $user_id_reported, $message) {
-		//implement
+		//TODO
 	}
 	
 	public static function get_reports_by_reported_id($reported_id) {
-		//implement
+		//TODO
 	}
 	
 	public static function get_reports_by_handled($handled) {
-		//implement
+		//TODO
 	}
 	
 	
 	/* INSTANCE MEMBERS */
 	
-	//Instance Variables
+	// Instance Variables
 	private $id;
 	private $user_id_reported;
 	private $user_id_reporter
@@ -30,59 +30,59 @@ class Reports {
 	private $createdDate;
 	private $handled;
 	
-	//Constructor
+	// Constructor
 	public function __construct($user_id_reporter, $user_id_reported, $message) {
 		//calls setter methods for validation
 	}
 	
-	//Getters and Setters
+	// Getters and Setters
 	public function get_id() {
-		//implement
+		//TODO
 	}
 	
 	private function set_id($id) {
-		//implement
+		//TODO
 	}
 	
 	public function get_user_id_reported() {
-		//implement
+		//TODO
 	}
 	
 	private function set_user_id_reported ($user_id_reported) {
-		//implemented
+		//TODOed
 	}
 	
 	public function get_user_id_reporter() {
-		//implement
+		//TODO
 	}
 	
 	private function set_user_id_reporter($user_id_reporter) {
-		//implement
+		//TODO
 	}
 	
 	public function get_message() {
-		//implement
+		//TODO
 	}
 	
 	private function set_message($message) {
-		//implement
+		//TODO
 	}
 	
 	public function get_handled() {
-		//implement
+		//TODO
 	}
 	
 	private function set_handled($handled) {
-		//implement
+		//TODO
 	}
 	
 	public function get_modifiedDate() {
-		//implement
+		//TODO
 	}
 	
-	//Instance Methods
+	// Instance Methods
 	public function update_handled($handled) {
-		//implement
+		//TODO
 	}	
 }
 ?>

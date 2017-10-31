@@ -7,15 +7,15 @@ class User {
     public static $tablename = "users";
 
     // Static Methods
-    public static get_user_by_id(id) {
+    public static function get_user_by_id(id) {
         // TODO
     }
 
-    public static get_user_by_email(email) {
+    public static function get_user_by_email(email) {
         // TODO
     }
 
-    public static create_user(email, password, name) {
+    public static function create_user(email, password, name) {
         // TODO
     }
 
@@ -35,125 +35,125 @@ class User {
     private $modifiedDate;
 
     // Getters and Setters (Validation)
-    public get_id() {
+    public function get_id() {
         // TODO
     }
 
-    private set_id() {
+    private function set_id() {
         // TODO
     }
 
-    public get_name() {
+    public function get_name() {
         // TODO
     }
 
-    private set_name() {
+    private function set_name() {
         // TODO
     }
 
-    public get_email_address() {
+    public function get_email_address() {
         // TODO
     }
 
-    private set_email_address() {
+    private function set_email_address() {
         // TODO
     }
 
-    public get_password_salt() {
+    public function get_password_salt() {
         // TODO
     }
 
-    private set_password_salt() {
+    private function set_password_salt() {
         // TODO
     }
 
-    public get_password_hash() {
+    public function get_password_hash() {
         // TODO
     }
 
-    private set_password_hash() {
+    private function set_password_hash() {
         // TODO
     }
 
-    public get_avg_rating() {
+    public function get_avg_rating() {
         // TODO
     }
 
-    private set_avg_rating() {
+    private function set_avg_rating() {
         // TODO
     }
 
-    public get_num_ratings() {
+    public function get_num_ratings() {
         // TODO
     }
 
-    private set_num_ratings() {
+    private function set_num_ratings() {
         // TODO
     }
 
-    public get_biography() {
+    public function get_biography() {
         // TODO
     }
 
-    private set_biography() {
+    private function set_biography() {
         // TODO
     }
 
-    public get_disabled() {
+    public function get_disabled() {
         // TODO
     }
 
-    private set_disabled() {
+    private function set_disabled() {
         // TODO
     }
 
-    public get_modified_date() {
+    public function get_modified_date() {
         // TODO
     }
 
 
     // Instance Methods
-    public add_rating() {
+    public function add_rating() {
         // TODO
     }
 
-    public get_binders() {
+    public function get_binders() {
         // TODO
     }
 
-    public get_matches() {
+    public function get_matches() {
         // TODO
     }
 
-    public get_proposals() {
+    public function get_proposals() {
         // TODO
     }
 
-    public get_university() {
+    public function get_university() {
         // TODO
     }
 
-    public update_biography() {
+    public function update_biography() {
         // TODO
     }
 
-    public update_disabled() {
+    public function update_disabled() {
         // TODO
     }
 
-    public update_email() {
+    public function update_email() {
         // TODO
     }
 
-    public update_name() {
+    public function update_name() {
         // TODO
     }
 
-    public update_password() {
+    public function update_password() {
         // TODO
     }
 
-    public update_university_id() {
+    public function update_university_id() {
         // TODO
     }
 }
