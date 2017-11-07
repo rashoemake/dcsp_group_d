@@ -9,28 +9,96 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<script src="js/bootstrap.js"></script>
     
+    <style>
+    .title-text {
+        font-size: 100px;
+    }
+    .subtitle-text {
+        font-size: 45px;
+    }
+    .navbar-padding {
+        padding-right: 3px;
+        padding-left: 3px;
+    }
+    body {
+        background-color: #cfcfcf;
+    }
+    .btn-primary {
+        color: #000;
+    }
+    .footer {
+        padding: 10px;
+        border-top: 2px;
+    }
+    </style>
+    
 		<title>Welcome to BINDR!</title>
 	</head>
 	
 	<body>
+  <div class="container">
     <!-- Begin Navbar -->
 		<nav class="navbar navbar-inverse">
       <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">BINDR</a>
+            <div class="navbar-header">
+        <a class="navbar-brand" href="#" >BINDR</a>
       </div>
         <ul class="nav navbar-nav">
-          <li><a href="#">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li class="navbar-padding"><a href="#">Home</a></li>
+          <li class="navbar-padding"><a href="about.html">About</a></li>
+          <li class="navbar-padding"><a href="#">Contact</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav pull-right">
           <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
-          <p class="navbar-text">|</p>
-          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>          
+          <li style="padding-right: 15px;"><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>          
         </ul>
       </div>
-    </nav>		
+    </nav>
+    
+    <!-- Begin Page Content -->
+
+      <h1 class="text-center title-text">BINDR</h1>
+      <h2 class="text-center subtitle-text">Your New Study Group</h2><br>
+      
+      <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-2 text-center">
+          <button type="button" class="btn btn-primary btn-lg">Login</button>
+        </div>
+        <div class="col-md-2 text-center">
+          <button type="button" class="btn btn-primary btn-lg">Sign Up</button>
+        </div>
+        <div class="col-md-4">
+        </div>
+      </div>
+      
+
+      
+
+
+  </div> 
+      
+ 
+      
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 
 	</body>
