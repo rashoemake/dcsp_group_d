@@ -7,12 +7,12 @@ class Binder {
     public static $tablename = "binders";
 
     // Static Methods
-    public static get_binder_by_id() {
+    public static function get_binder_by_id($id) {
         // TODO
     }
 
-    public static create_binder() {
-        // TODo
+    public static function create_binder($name) {
+        // TODO
     }
 
 
@@ -26,65 +26,61 @@ class Binder {
     private $modifiedDate;
 
     // Getters and Setters (Validation)
-    public get_id() {
+    public function get_id() {
         // TODO
     }
 
-    private set_id() {
+    private function set_id($id) {
         // TODO
     }
 
-    public get_name() {
+    public function get_name() {
         // TODO
     }
 
-    private set_name() {
+    private set_name($name) {
         // TODO
     }
 
-    public get_description() {
+    public function get_description() {
         // TODO
     }
 
-    private set_description() {
+    private function set_description($description) {
         // TODO
     }
 
-    public get_disabled() {
+    public function get_disabled() {
         // TODO
     }
 
-    private set_disabled() {
+    private function set_disabled($disabled) {
         // TODO
     }
 
-    public get_modified_date() {
+    public function get_modified_date() {
         // TODO
     }
 
 
     // Instance Methods
-    public add_message() {
+    public function add_user($user_id) {
         // TODO
     }
 
-    public add_user() {
+    public function remove_user($user_id) {
         // TODO
     }
 
-    public remove_user() {
+    public function update_description($description) {
         // TODO
     }
 
-    public update_description() {
+    public function update_disabled($disable) {
         // TODO
     }
 
-    public update_disabled() {
-        // TODO
-    }
-
-    public update_name() { 
+    public function update_name($name) { 
         // TODO
     }
 }
