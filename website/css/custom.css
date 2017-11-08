@@ -1,0 +1,19 @@
+.title-text {
+	font-size: 100px;
+}
+.subtitle-text {
+	font-size: 45px;
+}
+.navbar-padding {
+	padding-right: 3px;
+	padding-left: 3px;
+}
+body {
+	background-color: #cfcfcf;
+}
+.btn-primary {
+	color: #000;
+}
+.glyph-padding {
+    padding-right: 6px; /*put space between glyph and text*/
+}
