@@ -17,3 +17,19 @@ body {
 .glyph-padding {
     padding-right: 6px; /*put space between glyph and text*/
 }
+.panel-body {
+	background-color: #2bbd7e;
+	margin-top: 75px;
+	margin-left: 150px;
+	margin-right: 150px;
+}
+.subtitle-text-center {
+	font-size: 45px;
+	text-align: center;
+}
+.login-text {
+	font-size: 30px;
+}
+.login-box {
+	display: inline;
+}
