@@ -1,0 +1,70 @@
+User:
+	id : int
+	name : str
+	university_id : int FK(univ.id)
+	avgRating : float
+	numRatings : int
+	emailAdress : string
+	passwordSalt : str
+	passwordHash : str
+	bio : text
+	disabled : bool
+	modifiedDate : timestamp
+	
+User Binders:
+	user_id :int FK(users.id)
+	binder_id: int FK(binders.id)
+	
+Binder:
+	id : int PK
+	name : str
+	discription : text
+	modifiedDate : timestamp
+	disabled : bool
+	
+Messages:
+	id : int PK
+	user_id : int FK(user.id)
+	body : text
+	createdDate : timestamp
+	binder_id : int FK(binders.id)
+	hidden: bool
+	
+Universities:
+	id : int PK
+	name : string
+	city : string
+	state : string
+	modifiedDate : timestamp
+	
+Matches:
+	id : int PK
+	user1_id : int FK
+	user2_id : int FK
+	user1_approve : bool
+	user2_approve : bool
+	modifiedDate : timestamp
+
+Reports:
+	id : int PK
+	user_id_reporter : int FK
+	user_id_reported : int FK
+	message: text
+	createdDate : timestamp
+	handled : bool
+	
+Proposals:
+	id : int PK
+	proposer_id : int FK
+	proposed_id : int FK
+	binder_id : int FK
+	is_removal : bool
+	reason: text
+	createdDate : timestamp
+	
+Propossal Responses:
+	id: int PK
+	proposal_id : int FK
+	response : bool
+	user_id : int FK
+	modifiedDate : timestamp
