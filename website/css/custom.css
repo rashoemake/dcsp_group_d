@@ -5,16 +5,19 @@
 	font-size: 45px;
 }
 .navbar-padding {
+    /*put space between navbar text and glyphs*/
 	padding-right: 3px;
 	padding-left: 3px;
 }
 body {
-	background-color: #cfcfcf;
+    /*set background color site-wide*/
+	background-color: #9e9e9e;
 }
 .btn-primary {
 	color: #000;
 }
 .glyph-padding {
+<<<<<<< HEAD
     padding-right: 6px; /*put space between glyph and text*/
 }
 .panel-body {
@@ -32,4 +35,24 @@ body {
 }
 .login-box {
 	display: inline;
+=======
+    /*put space between glyph and text*/
+    padding-right: 6px; 
+}
+.nav-color {
+    /*sets the background color of the navigation panel*/
+    background-color: #9fffe0; 
+}
+.nav-padding {
+    /*pad entries in the navigation panel*/
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+.nav-text {
+    color: black;
+}
+.panel-content-color {
+    /*sets the background color of the binder content panel*/
+    background-color: #cfcfcf; 
+>>>>>>> 037899555471cbc3eb5b579127f0f5a01905d12a
 }

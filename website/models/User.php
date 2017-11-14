@@ -34,6 +34,15 @@ class User {
     private $disabled;
     private $modifiedDate;
 
+    // Constructor
+	public function __construct($email, $password, $name) {
+        $this->email = $email;
+        $this->name = $name;
+
+        $this->password_salt = $salt = uniqid(mt_rand(), true);
+        $this->password_hash = 
+	}
+
     // Getters and Setters (Validation)
     public function get_id() {
         // TODO
