@@ -19,8 +19,8 @@
     <nav class="navbar navbar-inverse">
       <div class="container">
         <ul class="nav navbar-nav">
-          <li class="navbar-padding"><a href="index.html"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
-          <li class="navbar-padding"><a href="about.html">About</a></li>
+          <li class="navbar-padding"><a href="index.php"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
+          <li class="navbar-padding"><a href="about.php">About</a></li>
           <li class="navbar-padding"><a href="#">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
@@ -39,8 +39,8 @@
           <ul class="list-unstyled">
             <li><h3><h3 class="text-center" style="border-bottom: 1px solid black;">Navigation</h3></h3></li>
             <li class="nav-padding"><a class="nav-text" href="#">Propose User to Binder</a></li>
-            <li class="nav-padding"><a class="nav-text" href="#">Edit this Binder</a></li>
-            <li class="nav-padding"><a class="nav-text" href="message.html">Post a message</a></li>
+            <li class="nav-padding"><a class="nav-text" href="edit-binder.php">Edit this Binder</a></li>
+            <li class="nav-padding"><a class="nav-text" href="#message">Post a message</a></li>
             <li class="nav-padding"><a class="nav-text" href="#">Leave this Binder</a></li>
           </ul>
         </div> <!-- end col-sm-2 -->
@@ -76,27 +76,28 @@
         </div> <!-- end col-sm-10 -->
       </div> <!-- end row -->
       
-      <!-- begin message area -->
-      <div class="panel panel-default">
-        <div class="panel-body panel-content-color">
-        
-          <!-- message submission form -->
-          <form method="post"> <!-- add action -->
-            <div class="form-group">
-              <label for="message"><h3>Enter your message below</h3></label>
-              <textarea class="form-control" rows="3" id="message"></textarea><br>
-              <button type="submit" class="btn btn-primary">Submit</button>
-              <a href="home.html" class="btn btn-primary">Cancel</a>
-            </div>
-          </form>
-        </div>
-      </div> <!-- end message submission panel -->
-     
-     <!-- messages retrieved from the database -->
+      <!-- messages retrieved from the database -->
       <div class="panel panel-default">
         <div class="panel-body panel-content-color">
         </div>
       </div>
+      
+      <!-- begin message submission area -->
+      <div class="panel panel-default">
+        <div class="panel-body panel-content-color">
+        
+          <!-- message submission form -->
+          <form id="message" method="post"> <!-- add action -->
+            <div class="form-group">
+              <label for="message"><h3>Enter your message below</h3></label>
+              <textarea class="form-control" rows="3" id="message"></textarea><br>
+              <button type="submit" class="btn btn-primary">Submit</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <a href="home.php" class="btn btn-primary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div> <!-- end message submission panel -->
       
     </div> <!-- end page content fluid-container -->
 
