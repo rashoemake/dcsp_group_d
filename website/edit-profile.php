@@ -19,8 +19,8 @@
       <nav class="navbar navbar-inverse">
         <div class="container">
           <ul class="nav navbar-nav">
-            <li class="navbar-padding"><a href="index.html"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
-            <li class="navbar-padding"><a href="about.html">About</a></li>
+            <li class="navbar-padding"><a href="index.php"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
+            <li class="navbar-padding"><a href="about.php">About</a></li>
             <li class="navbar-padding"><a href="#">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav pull-right">
@@ -28,8 +28,7 @@
             <li style="padding-right: 15px;"><a href="#"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up</a></li>          
           </ul>
         </div>
-      </nav>     
-      <br>
+      </nav>
     
 <!--
 The default values for the form fields below should be drawn from
@@ -42,19 +41,27 @@ errors
         <div class="col-md-8">
           <div class="panel panel-default">
             <div class="panel-body panel-content-color">
-              <h2 class="text-center">Edit a Binder</h2>
+              <h2 class="text-center">Edit your Profile</h2>
               <form>
                 <div class="form-group">
-                  <label for="binder-name"><h3>Binder name</h3></label>
-                  <input class="form-control" type="text" name="binder-name" id="binder-name" value="Binder's name">     
+                  <label for="user-name"><h3>User name</h3></label>
+                  <input class="form-control" type="text" name="user-name" id="user-name" value="User name">     
                 </div>
                 <div class="form-group">
-                  <label for="binder-description"><h3>Binder description</h3></label>
-                  <textarea class="form-control" rows="3" name="binder-description" id="binder-description">Binder's Description</textarea>
+                  <label for="user-email"><h3>E-mail</h3></label>
+                  <input class="form-control" type="text" name="user-email" id="user-email" value="User email">     
+                </div>
+                <div class="form-group">
+                  <label for="user-school"><h3>School</h3></label>
+                  <input class="form-control" type="text" name="user-school" id="user-school" value="School name">     
+                </div>
+                <div class="form-group">
+                  <label for="binder-description"><h3>Biography</h3></label>
+                  <textarea class="form-control" rows="3" name="user-bio" id="user-bio">User biography</textarea>
                 </div>
                 <button class="btn btn-primary" type="submit">Apply</button>
                 &nbsp&nbsp&nbsp
-                <a class="btn btn-primary" href="home.html">Cancel</a>
+                <a class="btn btn-primary" href="home.php">Cancel</a>
               </form>
             </div>
           </div>
