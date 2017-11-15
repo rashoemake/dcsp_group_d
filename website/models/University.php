@@ -14,6 +14,29 @@ class University {
 	public static function get_university_by_city($city) {
 		//TODO
 	}
+
+	public static function get_university_by_id($id) {
+		// Get the mysql connection
+		require("connect.php");
+
+		// Query for the ID
+		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');	
+		}
+
+		if (!($stmt->bind_param("i", $id)) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
+		$row = $stmt->get_result()->fetch_assoc();
+		$return_value = new University($row["name"], $row["city"], $row["state"]);
+		$return_value.match_row($row);
+		return $return_value;
+	}
 	
 	public static function get_university_by_name($name) {
 		//TODO
@@ -37,42 +60,51 @@ class University {
 	public function __construct($name, $city, $state) {
 		//calls setter methods for validation
 	}
+
+	// Database Helper
+	public function match_row($row) {
+		// Updates the current object to match an associative row from the database
+		$this->id = $row["id"];
+		$this->name = $row["name"];
+		$this->city = $row["city"];
+		$this->state = $row["state"];
+		$this->modifiedDate = $row["modifiedDate"];
+	}
 	
 	// Getters and Setters
 	public function get_id() {
-		//TODO
+		return $this->id;
 	}
 	
 	private function set_id($id) {
-		//TODO
+		$this->id = $id;
 	}
 	
 	public function get_name() {
-		//TODO
+		return $this->name;
 	}
 	
 	private function set_name($name) {
-		//TODOed
+		$this->name = $name;
 	}
 	
 	public function get_city() {
-		//TODO
+		return $this->city;
 	}
 	
 	private function set_city($city) {
-		//TODO
+		$this->city = $city;
 	}
 	
 	public function get_state() {
-		//TODO
+		return $this->state;
 	}
 	
 	private function set_state($state) {
-		//TODO
-	}
+		$this->state = $state;	}
 	
 	public function get_modifiedDate() {
-		//TODO
+		return $this->modifiedDate;
 	}
 	
 	// Instance Methods
