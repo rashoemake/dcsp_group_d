@@ -36,3 +36,17 @@ body {
     /*sets the background color of the binder content panel*/
     background-color: #cfcfcf; 
 }
+
+.panel-body {
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.login-label {
+    display: inline-block;
+    width: 90px;
+}
+
+.login-input {
+    width: 200px;
+}
