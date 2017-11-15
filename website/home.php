@@ -19,8 +19,8 @@
     <nav class="navbar navbar-inverse">
       <div class="container">
         <ul class="nav navbar-nav">
-          <li class="navbar-padding"><a href="index.html"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
-          <li class="navbar-padding"><a href="about.html">About</a></li>
+          <li class="navbar-padding"><a href="index.php"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
+          <li class="navbar-padding"><a href="about.php">About</a></li>
           <li class="navbar-padding"><a href="#">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
@@ -39,7 +39,7 @@
           <ul class="list-unstyled">
             <li><h3><h3 class="text-center" style="border-bottom: 1px solid black;">Navigation</h3></h3></li>
             <li class="nav-padding"><a class="nav-text" href="#">Propose User to Binder</a></li>
-            <li class="nav-padding"><a class="nav-text" href="edit-binder.html">Edit this Binder</a></li>
+            <li class="nav-padding"><a class="nav-text" href="edit-binder.php">Edit this Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="#message">Post a message</a></li>
             <li class="nav-padding"><a class="nav-text" href="#">Leave this Binder</a></li>
           </ul>
@@ -93,7 +93,7 @@
               <textarea class="form-control" rows="3" id="message"></textarea><br>
               <button type="submit" class="btn btn-primary">Submit</button>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <a href="home.html" class="btn btn-primary">Cancel</a>
+              <a href="home.php" class="btn btn-primary">Cancel</a>
             </div>
           </form>
         </div>
