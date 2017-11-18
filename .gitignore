@@ -1,9 +1,12 @@
 # IDE Dirs #
 .vscode/
 .vs/
+website/nbproject
 
 *.exe
 *.dll
 *.o
 *.so
 *.directory
+/website/nbproject/private/
+*test*.php
