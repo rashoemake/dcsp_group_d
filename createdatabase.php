@@ -3,8 +3,8 @@
   ini_set('display_errors', 1);
   //
   //requires login.php that contains host name user name password and database name for the mysql database
-  require_once 'login.php';
-  $connection = new mysqli($hn, $un, $pw, $db);
+  require_once 'website/models/connect.php';
+  $connection = $conn;
 
   if ($connection->connect_error) die($connection->connect_error);
 
@@ -15,7 +15,6 @@ function createuserstable($connection){
     avgRating     FLOAT,
     numRatings    INT,
     emailAddress  VARCHAR(254) NOT NULL UNIQUE,
-    passwordSalt  VARCHAR(4)  NOT NULL,
     passwordHash  VARCHAR(60) NOT NULL,
     bio           TEXT,
     disabled      BOOL,
