@@ -1,5 +1,5 @@
-<?php
 
+<?php
 class University {
 	/* STATIC MEMBERS */
 	
@@ -13,29 +13,6 @@ class University {
 	
 	public static function get_university_by_city($city) {
 		//TODO
-	}
-
-	public static function get_university_by_id($id) {
-		// Get the mysql connection
-		require("connect.php");
-
-		// Query for the ID
-		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
-			header('HTTP/1.1 500 Internal Server Error');	
-		}
-
-		if (!($stmt->bind_param("i", $id)) {
-			header('HTTP/1.1 500 Internal Server Error');
-		}
-
-		if (!($stmt->execute())) {
-			header('HTTP/1.1 500 Internal Server Error');
-		}
-
-		$row = $stmt->get_result()->fetch_assoc();
-		$return_value = new University($row["name"], $row["city"], $row["state"]);
-		$return_value.match_row($row);
-		return $return_value;
 	}
 	
 	public static function get_university_by_name($name) {
@@ -60,51 +37,42 @@ class University {
 	public function __construct($name, $city, $state) {
 		//calls setter methods for validation
 	}
-
-	// Database Helper
-	public function match_row($row) {
-		// Updates the current object to match an associative row from the database
-		$this->id = $row["id"];
-		$this->name = $row["name"];
-		$this->city = $row["city"];
-		$this->state = $row["state"];
-		$this->modifiedDate = $row["modifiedDate"];
-	}
 	
 	// Getters and Setters
 	public function get_id() {
-		return $this->id;
+		//TODO
 	}
 	
 	private function set_id($id) {
-		$this->id = $id;
+		//TODO
 	}
 	
 	public function get_name() {
-		return $this->name;
+		//TODO
 	}
 	
 	private function set_name($name) {
-		$this->name = $name;
+		//TODOed
 	}
 	
 	public function get_city() {
-		return $this->city;
+		//TODO
 	}
 	
 	private function set_city($city) {
-		$this->city = $city;
+		//TODO
 	}
 	
 	public function get_state() {
-		return $this->state;
+		//TODO
 	}
 	
 	private function set_state($state) {
-		$this->state = $state;	}
+		//TODO
+	}
 	
 	public function get_modifiedDate() {
-		return $this->modifiedDate;
+		//TODO
 	}
 	
 	// Instance Methods
