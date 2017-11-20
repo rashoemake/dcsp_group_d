@@ -10,15 +10,12 @@ class User {
     public static function get_user_by_id($id) {
         // Get the mysql connection
 		require("connect.php");
-        
+
         // Query for the ID
-        if (!($stmt = $conn->prepare("SELECT * FROM `$tablename` WHERE id=?"))) {
+        if ($stmt = $conn->prepare("SELECT * FROM `users` WHERE id=?")) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-
-        if (!($stmt->bind_param("i", $id))) {
-            header('HTTP/1.1 500 Internal Server Error');
-        }
+        $stmt->bind_param("i", $id);
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
