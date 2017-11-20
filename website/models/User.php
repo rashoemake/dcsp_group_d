@@ -88,6 +88,7 @@ class User {
     private $university_id;
 
     // Getters and Setters (Validation)
+    // TODO: VALIDATION
     public function get_id() {
         return $this->id;
     }
@@ -212,8 +213,31 @@ class User {
         }
     }
     
-    public function add_rating() {
-        // TODO
+    public function add_rating($rating) {
+        // Get the mysql connection
+        require("connect.php");
+        
+        $avg_rating = $this->get_avg_rating();
+        $num_ratings = $this->get_num_ratings();
+        $new_num_ratings = $num_ratings + 1;
+        $new_avg_rating = ($avg_rating * ($num_ratings / $new_num_ratings)) + ($rating * (1 / $new_num_ratings));
+        
+        // Query for the ID
+        if ($stmt = $conn->prepare("UPDATE `users` SET avgRating=?, numRatings=? WHERE id=?")) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("iii", $new_avg_rating, $new_num_ratings, $id);
+
+        // Runs validation
+        $this->set_avg_rating($new_avg_rating);
+        $this->set_num_ratings($new_num_ratings);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        return $this->get_avg_rating();
     }
 
     public function get_binders() {
@@ -232,28 +256,120 @@ class User {
         // TODO
     }
 
-    public function update_biography() {
-        // TODO
+    public function update_biography($biography) {
+        // Get the mysql connection
+        require("connect.php");
+
+        // Query for the ID
+        if ($stmt = $conn->prepare("UPDATE `users` SET bio=? WHERE id=?")) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("si", $biography, $id);
+
+        // Runs validation
+        $this->set_biography($biography);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
-    public function update_disabled() {
-        // TODO
+    public function update_disabled($disabled) {
+        // Get the mysql connection
+        require("connect.php");
+        
+        // Query for the ID
+        if ($stmt = $conn->prepare("UPDATE `users` SET disabled=? WHERE id=?")) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("bi", $disabled, $id);
+
+        // Runs validation
+        $this->set_disabled($disabled);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
-    public function update_email() {
-        // TODO
+    public function update_email_address($email_address) {
+        // Get the mysql connection
+        require("connect.php");
+        
+        // Query for the ID
+        if ($stmt = $conn->prepare("UPDATE `users` SET emailAddress=? WHERE id=?")) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("si", $email_address, $id);
+
+        // Runs validation
+        $this->set_email_address($email_address);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
-    public function update_name() {
-        // TODO
+    public function update_name($name) {
+        // Get the mysql connection
+        require("connect.php");
+        
+        // Query for the ID
+        if ($stmt = $conn->prepare("UPDATE `users` SET name=? WHERE id=?")) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("si", $name, $id);
+
+        // Runs validation
+        $this->set_name($name);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
-    public function update_password() {
-        // TODO
+    public function update_password($password) {
+        // Get the mysql connection
+        require("connect.php");
+
+        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+        
+        // Query for the ID
+        if ($stmt = $conn->prepare("UPDATE `users` SET passwordHash=? WHERE id=?")) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("si", $passwordHash, $id);
+
+        // Runs validation
+        $this->set_password_hash($passwordHash);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
-    public function update_university_id() {
-        // TODO
+    public function update_university_id($university_id) {
+        // Get the mysql connection
+        require("connect.php");
+        
+        // Query for the ID
+        if ($stmt = $conn->prepare("UPDATE `users` SET university_id=? WHERE id=?")) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("ii", $university_id, $id);
+
+        // Runs validation
+        $this->set_university_id($university_id);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 }
 
