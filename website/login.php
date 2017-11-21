@@ -13,26 +13,37 @@
     	<link rel="stylesheet" type="text/css" href="css/custom.css">
     
 		<style>
-		.title-text {
-			font-size: 100px;
-		}
-		.subtitle-text {
-			font-size: 45px;
-		}
-		.navbar-padding {
-			padding-right: 3px;
-			padding-left: 3px;
-		}
-		body {
-			background-color: #9e9e9e;
-		}
-		.btn-primary {
-			color: #000;
-		}
-		.footer {
-			padding: 10px;
-			border-top: 2px;
-		}
+			.title-text {
+				font-size: 100px;
+			}
+			.subtitle-text {
+				font-size: 45px;
+			}
+			.navbar-padding {
+				padding-right: 3px;
+				padding-left: 3px;
+			}
+			body {
+				background-color: #9e9e9e;
+			}
+			.btn-primary {
+				color: #000;
+			}
+			.footer {
+				padding: 10px;
+				border-top: 2px;
+			}			
+			.panel-body {
+				padding-top: 15px;
+				padding-left: 15px;
+			}
+			.login-label {
+				display: inline-block;
+				width: 90px;
+			}
+			.login-input {
+				width: 200px;
+			}
 		</style>
 		
 		<title>Login : Bindr</title>
