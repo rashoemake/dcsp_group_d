@@ -3,19 +3,18 @@
   ini_set('display_errors', 1);
   //
   //requires login.php that contains host name user name password and database name for the mysql database
-  require_once 'login.php';
-  $connection = new mysqli($hn, $un, $pw, $db);
+  require_once 'website/models/connect.php';
+  $connection = $conn;
 
   if ($connection->connect_error) die($connection->connect_error);
 
 function createuserstable($connection){
   $query = "CREATE TABLE IF NOT EXISTS users (
-    id            INT NOT NULL UNIQUE,
+    id            INT NOT NULL AUTO_INCREMENT UNIQUE,
     name          VARCHAR(64),
     avgRating     FLOAT,
     numRatings    INT,
     emailAddress  VARCHAR(254) NOT NULL UNIQUE,
-    passwordSalt  VARCHAR(4)  NOT NULL,
     passwordHash  VARCHAR(60) NOT NULL,
     bio           TEXT,
     disabled      BOOL,
@@ -35,7 +34,7 @@ function createuserstable($connection){
  
 function createmessagestable($connection){
   $query = "CREATE TABLE IF NOT EXISTS messages (
-    id            INT NOT NULL UNIQUE,
+    id            INT NOT NULL AUTO_INCREMENT UNIQUE,
     body          TEXT,
     hidden        BOOL,
     user_id INT NOT NULL,
@@ -59,7 +58,7 @@ function createmessagestable($connection){
  
 function createuniversitiestable($connection){
   $query = "CREATE TABLE IF NOT EXISTS universities (
-    id            INT NOT NULL UNIQUE,
+    id            INT NOT NULL AUTO_INCREMENT UNIQUE,
     name          VARCHAR(64) NOT NULL,
     city          VARCHAR(64) NOT NULL,
     state         VARCHAR(64)  NOT NULL,
@@ -75,7 +74,7 @@ function createuniversitiestable($connection){
  } 
 function createuserbinderstable($connection){
   $query = "CREATE TABLE IF NOT EXISTS user_binders (
-    user_id INT,
+    user_id INT AUTO_INCREMENT,
     FOREIGN KEY fk_user_id(user_id) 
     REFERENCES users(id)
     ON UPDATE CASCADE
@@ -98,7 +97,7 @@ function createuserbinderstable($connection){
  
 function createbindertable($connection){
   $query = "CREATE TABLE IF NOT EXISTS binder (
-    id            INT NOT NULL UNIQUE,
+    id            INT NOT NULL AUTO_INCREMENT UNIQUE,
     name          VARCHAR(64),
     bio           TEXT,
     disabled      BOOL,
@@ -116,7 +115,7 @@ function createbindertable($connection){
   
 function creatematchestable($connection){
   $query = "CREATE TABLE IF NOT EXISTS matches (
-    id            INT NOT NULL UNIQUE,
+    id            INT NOT NULL AUTO_INCREMENT UNIQUE,
     user1_approve BOOL,
     user2_approve BOOL,
     user1_id INT,
@@ -141,7 +140,7 @@ function creatematchestable($connection){
  }
 function createreportstable($connection){
   $query = "CREATE TABLE IF NOT EXISTS reports (
-    id                INT NOT NULL UNIQUE,
+    id                INT NOT NULL AUTO_INCREMENT UNIQUE,
     message           TEXT,
     handled           BOOL,
     user_id_reporter INT,
@@ -168,7 +167,7 @@ function createreportstable($connection){
   
 function createproposalstable($connection){
   $query = "CREATE TABLE IF NOT EXISTS proposals (
-    id           INT NOT NULL UNIQUE,
+    id           INT NOT NULL AUTO_INCREMENT UNIQUE,
     reason       TEXT,
     is_removal   BOOL,
     proposer_id  INT,
@@ -200,7 +199,7 @@ function createproposalstable($connection){
    
 function createproposalresponsestable($connection){
   $query = "CREATE TABLE IF NOT EXISTS proposal_responses (
-    id           INT NOT NULL UNIQUE,
+    id           INT NOT NULL AUTO_INCREMENT UNIQUE,
     response     BOOL,
     proposal_id INT,
     FOREIGN KEY fk_proposal_id(proposal_id)  
