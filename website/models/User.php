@@ -3,16 +3,13 @@
 class User {
     /* STATIC MEMBERS */
 
-    // Static Variables
-    public static $tablename = "users";
-
     // Static Methods
     public static function get_user_by_id($id) {
         // Get the mysql connection
 		require("connect.php");
 
         // Query for the ID
-        if ($stmt = $conn->prepare("SELECT * FROM `users` WHERE id=?")) {
+        if (!($stmt = $conn->prepare("SELECT * FROM `users` WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("i", $id);
@@ -31,7 +28,7 @@ class User {
 		require("connect.php");
         
         // Query for the ID
-        if ($stmt = $conn->prepare("SELECT * FROM `users` WHERE emailAddress=?")) {
+        if (!($stmt = $conn->prepare("SELECT * FROM `users` WHERE emailAddress=?")) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("s", $email);
@@ -57,12 +54,12 @@ class User {
 		require("connect.php");
         
         // Query for the ID
-        if ($stmt = $conn->prepare("INSERT INTO `users` (emailAddress, name, passwordHash) VALUES (?, ?, ?)")) {
+        if (!($stmt = $conn->prepare("INSERT INTO `users` (emailAddress, name, passwordHash) VALUES (?, ?, ?)"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("sss", $new_user->get_email_address(), $new_user->get_name(), $new_user->get_password_hash());
 
-        if (!$stmt->execute()) {
+        if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
         }
 
@@ -86,7 +83,7 @@ class User {
 
     // Getters and Setters (Validation)
     // TODO: VALIDATION
-    public function get_id() {
+    public function get_id() {  
         return $this->id;
     }
 
@@ -220,7 +217,7 @@ class User {
         $new_avg_rating = ($avg_rating * ($num_ratings / $new_num_ratings)) + ($rating * (1 / $new_num_ratings));
         
         // Query for the ID
-        if ($stmt = $conn->prepare("UPDATE `users` SET avgRating=?, numRatings=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET avgRating=?, numRatings=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
@@ -258,7 +255,7 @@ class User {
         require("connect.php");
 
         // Query for the ID
-        if ($stmt = $conn->prepare("UPDATE `users` SET bio=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET bio=? WHERE id=?")) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
@@ -277,7 +274,7 @@ class User {
         require("connect.php");
         
         // Query for the ID
-        if ($stmt = $conn->prepare("UPDATE `users` SET disabled=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET disabled=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
@@ -296,7 +293,7 @@ class User {
         require("connect.php");
         
         // Query for the ID
-        if ($stmt = $conn->prepare("UPDATE `users` SET emailAddress=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET emailAddress=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
@@ -315,7 +312,7 @@ class User {
         require("connect.php");
         
         // Query for the ID
-        if ($stmt = $conn->prepare("UPDATE `users` SET name=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET name=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
@@ -336,7 +333,7 @@ class User {
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
         
         // Query for the ID
-        if ($stmt = $conn->prepare("UPDATE `users` SET passwordHash=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET passwordHash=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
@@ -355,7 +352,7 @@ class User {
         require("connect.php");
         
         // Query for the ID
-        if ($stmt = $conn->prepare("UPDATE `users` SET university_id=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET university_id=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
