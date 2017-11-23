@@ -9,47 +9,35 @@ class Message {
     // Static Methods
     
     //returns an associative array of error messages
-    public static function create_message($body, $user_id, $binder_id) {
-        $error_list = array();
-        
-        //validate inputs
-        try {
-            $tmp = new Message($body, $user_id, $binder_id);
-        } catch (Message_body_exception $ex) {
-            $error_list['body_err'] = $ex->errorMessage();
-            return $error_list;
-        }
+    public static function create_message($body, $user_id, $binder_id) {        
+        $tmp = new Message($body, $user_id, $binder_id);
                 
         //create DB connection
         require_once 'connect.php';
         
-        if (!($stmt = $conn->prepare("INSERT INTO `$tablename` VALUES(?,?,?)"))) {
+        if ($stmt = $conn->prepare("INSERT INTO `messages`(body, user_id, binder_id) VALUES(?,?,?)")) {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
-        if (!($stmt->bind_param('sii', $body, $user_id, $binder_id))) {
-            header('HTTP/1.1 500 Internal Server Error');
-        }
+        $stmt->bind_param("sii", $tmp->get_body(), $tmp->get_user_id(), $tmp->get_binder_id());
         
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
-        return $error_list;
+        return $conn->insert_id;
     }
 
     public static function get_message_by_id($message_id) {
         //create DB connection
         require_once 'connect.php';
         
-        if(!($stmt = $conn->prepare("SELECT * FROM `$tablename` WHERE id=?"))) {
+        if($stmt = $conn->prepare("SELECT * FROM `messages` WHERE id=?")) {
             header('HTTP/1.1 500 Internal Server Error');
         }
-        
-        if (!($stmt->bind_param('i', $message_id))) {
-            header('HTTP/1.1 500 Internal Server Error');
-        }
-        
+
+        $stmt->bind_param('i', $message_id);
+       
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
         }
@@ -67,13 +55,11 @@ class Message {
         //create DB connection
         require_once 'connect.php';
         
-        if(!($stmt = $conn->prepare("SELECT * FROM `$tablename` WHERE binder_id=?"))) {
+        if($stmt = $conn->prepare("SELECT * FROM `messages` WHERE binder_id=?")) {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
-        if (!($stmt->bind_param('i', $binder_id))) {
-            header('HTTP/1.1 500 Internal Server Error');
-        }
+        $stmt->bind_param('i', $binder_id);
         
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
