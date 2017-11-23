@@ -28,7 +28,7 @@ class User {
 		require("connect.php");
         
         // Query for the ID
-        if (!($stmt = $conn->prepare("SELECT * FROM `users` WHERE emailAddress=?")) {
+        if (!($stmt = $conn->prepare("SELECT * FROM `users` WHERE emailAddress=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("s", $email);
@@ -255,7 +255,7 @@ class User {
         require("connect.php");
 
         // Query for the ID
-        if (!($stmt = $conn->prepare("UPDATE `users` SET bio=? WHERE id=?")) {
+        if (!($stmt = $conn->prepare("UPDATE `users` SET bio=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
