@@ -79,6 +79,9 @@
       <!-- messages retrieved from the database -->
       <div class="panel panel-default">
         <div class="panel-body panel-content-color">
+            <h2 style="border-bottom: black 2px solid;">Binder Messages</h2>
+            <p>Some message</p>
+            <p>Author: USER  Date: XX/XX/XXXX</p>
         </div>
       </div>
       
