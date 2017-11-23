@@ -46,12 +46,13 @@
 						<li class="navbar-padding"><a href="#">Contact</a></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
-						<li><a href="login.html"><span class="glyphicon glyphicon-log-in glyph-padding"></span> Login</a></li>
-						<li style="padding-right: 15px;"><a href="#"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up </a></li>
+						<li style="padding-right: 15px;"><a href="sign-up.php"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up </a></li>
        				</ul>
 				</div>
 			</nav>
+
 			<br>
+
 			<!-- Begin Page Content -->
 			<div class="panel-group">
 				<div class="row">
@@ -60,21 +61,23 @@
 							<div class="panel-body">
 								<h1 class="text-center">Welcome Back!</h1>
 								<br>
-									<div class="container">
-										<div class="form-group">
-											<span class="login-label">Username:</span>
-											<input type="username" class="login-input" id="usr">
+									<form method="post" action="login.php">
+										<div class="container">
+											<div class="form-group">
+												<span class="login-label">Username:</span>
+												<input type="username" class="login-input" id="usr">
+											</div>
+											<div class="form-group">
+												<span class="login-label">Password:</span>
+												<input type="password" class="login-input" id="pwd">
+											</div>
+											<br>
 										</div>
-										<div class="form-group">
-											<span class="login-label">Password:</span>
-											<input type="password" class="login-input" id="pwd">
+										<div class="form-group pull-right">
+											<a href="index.php" class="btn btn-primary">Home</a>
+											<input type="submit" value="Log In" class="btn btn-primary">
 										</div>
-										<br>
-									</div>
-									<div class="form-group pull-right">
-										<a href="index.php" class="btn btn-primary">Home</a>
-										<button type="submit" class="btn btn-primary">Login</button>
-									</div>
+									</form>
 								</div>
 							</div>
 						</div>

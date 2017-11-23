@@ -47,10 +47,10 @@ like "View profile" or "Start matching"
         <div class="col-md-4">
         </div>
         <div class="col-md-2 text-center">
-          <button type="button" class="btn btn-primary btn-lg">Login</button>
+          <a href="login.php" class="btn btn-primary btn-lg">Login</a>
         </div>
         <div class="col-md-2 text-center">
-          <button type="button" class="btn btn-primary btn-lg">Sign Up</button>
+          <a href="sign-up.php" class="btn btn-primary btn-lg">Sign Up</a>
         </div>
         <div class="col-md-4">
         </div>

@@ -57,7 +57,7 @@ class User {
 		require("connect.php");
         
         // Query for the ID
-        if ($stmt = $conn->prepare("INSERT INTO `users` (emailAddress, name, passwordHash) VALUES (?, ?, ?)")) {
+        if (!($stmt = $conn->prepare("INSERT INTO `users` (emailAddress, name, passwordHash) VALUES (?, ?, ?)"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("sss", $new_user->get_email_address(), $new_user->get_name(), $new_user->get_password_hash());
