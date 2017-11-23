@@ -13,26 +13,13 @@
     	<link rel="stylesheet" type="text/css" href="css/custom.css">
     
 		<style>
-			.title-text {
-				font-size: 100px;
-			}
-			.subtitle-text {
-				font-size: 45px;
-			}
-			.navbar-padding {
-				padding-right: 3px;
-				padding-left: 3px;
-			}
-			body {
-				background-color: #9e9e9e;
-			}
 			.btn-primary {
 				color: #000;
 			}
 			.footer {
 				padding: 10px;
 				border-top: 2px;
-			}			
+			}
 			.panel-body {
 				padding-top: 15px;
 				padding-left: 15px;
@@ -59,12 +46,11 @@
 						<li class="navbar-padding"><a href="#">Contact</a></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
-						<li><a href="login.html"><span class="glyphicon glyphicon-log-in glyph-padding"></span> Login</a></li>
-						<li style="padding-right: 15px;"><a href="#"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up </a></li>
+						<li style="padding-right: 15px;"><a href="sign-up.php"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up </a></li>
        				</ul>
 				</div>
 			</nav>
-			
+
 			<br>
 
 			<!-- Begin Page Content -->
@@ -73,21 +59,25 @@
 					<div class="col-md-4 col-md-offset-4">
 						<div class="panel panel-default login-panel-padding">
 							<div class="panel-body">
-								<div class="subtitle-text text-center">Welcome Back!</div>
+								<h1 class="text-center">Welcome Back!</h1>
 								<br>
-									<div class="form-group">
-										<span class="login-label">Username:</span>
-										<input type="username" class="login-input" id="usr">
-									</div>
-									<div class="form-group">
-										<span class="login-label">Password:</span>
-										<input type="password" class="login-input" id="pwd">
-									</div>
-									<br>
-									<div class="form-group pull-right">
-										<a href="index.html" class="btn btn-primary">Home</a>
-										<button type="submit" class="btn btn-primary">Login</button>
-									</div>
+									<form method="post" action="login.php">
+										<div class="container">
+											<div class="form-group">
+												<span class="login-label">Username:</span>
+												<input type="username" class="login-input" id="usr">
+											</div>
+											<div class="form-group">
+												<span class="login-label">Password:</span>
+												<input type="password" class="login-input" id="pwd">
+											</div>
+											<br>
+										</div>
+										<div class="form-group pull-right">
+											<a href="index.php" class="btn btn-primary">Home</a>
+											<input type="submit" value="Log In" class="btn btn-primary">
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>

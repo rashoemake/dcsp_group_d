@@ -27,12 +27,12 @@ like "View profile" or "Start matching"
 		<nav class="navbar navbar-inverse">
       <div class="container">
         <ul class="nav navbar-nav">
-          <li class="navbar-padding"><a href="#"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
+          <li class="navbar-padding"><a href="index.php"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
           <li class="navbar-padding"><a href="about.php">About</a></li>
           <li class="navbar-padding"><a href="#">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
-          <li><a href="#"><span class="glyphicon glyphicon-log-in glyph-padding"></span>Login</a></li>
+          <li><a href="login.php"><span class="glyphicon glyphicon-log-in glyph-padding"></span>Login</a></li>
           <li style="padding-right: 15px;"><a href="#"><span class="glyphicon glyphicon-user glyph-padding"></span>Sign Up</a></li>          
         </ul>
       </div>
@@ -47,10 +47,10 @@ like "View profile" or "Start matching"
         <div class="col-md-4">
         </div>
         <div class="col-md-2 text-center">
-          <button type="button" class="btn btn-primary btn-lg">Login</button>
+          <a href="login.php" class="btn btn-primary btn-lg">Login</a>
         </div>
         <div class="col-md-2 text-center">
-          <button type="button" class="btn btn-primary btn-lg">Sign Up</button>
+          <a href="sign-up.php" class="btn btn-primary btn-lg">Sign Up</a>
         </div>
         <div class="col-md-4">
         </div>
