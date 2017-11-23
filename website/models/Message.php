@@ -15,7 +15,7 @@ class Message {
         //create DB connection
         require_once 'connect.php';
         
-        if ($stmt = $conn->prepare("INSERT INTO `messages`(body, user_id, binder_id) VALUES(?,?,?)")) {
+        if (!($stmt = $conn->prepare("INSERT INTO `messages`(body, user_id, binder_id) VALUES(?,?,?)"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
@@ -32,7 +32,7 @@ class Message {
         //create DB connection
         require_once 'connect.php';
         
-        if($stmt = $conn->prepare("SELECT * FROM `messages` WHERE id=?")) {
+        if(!($stmt = $conn->prepare("SELECT * FROM `messages` WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
 
@@ -55,7 +55,7 @@ class Message {
         //create DB connection
         require_once 'connect.php';
         
-        if($stmt = $conn->prepare("SELECT * FROM `messages` WHERE binder_id=?")) {
+        if(!($stmt = $conn->prepare("SELECT * FROM `messages` WHERE binder_id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
