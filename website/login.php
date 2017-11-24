@@ -9,7 +9,7 @@
 				if ($user != Null) {
 					$apw = password_hash()
 					if ($apw == $user->get_password_hash()) {
-						setcookie("logged_in", true);
+						$_SESSION["logged_in"] = true;
 						
 					}
 				}

@@ -8,7 +8,7 @@
                 if ($_POST["password"] != "") {
                     try {
                         User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
-                        setcookie("logged_in", true);
+                        $_SESSION["logged_in"] = true;
                         $success = true;
                     }
                     catch (Exception $except) {
