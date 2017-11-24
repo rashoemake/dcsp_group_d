@@ -2,17 +2,35 @@
 	session_start();
 	include_once "models/User.php";
 
+	if (isset($_SESSION["logged_in"])) {
+        if ($_SESSION["logged_in"] == true) {
+            header("Location: home.php");
+            exit();
+        }
+    }
+
 	if ((isset($_POST["email"])) && (isset($_POST["password"]))) {
 		if ($_POST["email"] != "") {
-			if ($_POST["email"] != "") {
+			if ($_POST["password"] != "") {
 				$user = User::get_user_by_email($_POST["email"]);
 				if ($user != Null) {
-					$apw = password_hash()
+					$apw = password_hash($_POST["password"], PASSWORD_BCRYPT);
 					if ($apw == $user->get_password_hash()) {
 						$_SESSION["logged_in"] = true;
-						
+						$_SESSION["account"] = $user.get_id();
+						header("Location: home.php");
+						exit();
 					}
 				}
+			}
+			else {
+				$no_password = true;
+			}
+		}
+		else{
+			$no_email = true;
+			if ($_POST["password"] == "") {
+				$no_password = true;
 			}
 		}
 	}
@@ -50,6 +68,9 @@
 			.login-input {
 				width: 200px;
 			}
+			.error-message {
+                color: #ff0000;
+            }
 		</style>
 		
 		<title>Login : Bindr</title>
@@ -86,10 +107,20 @@
 												<span class="login-label">email:</span>
 												<input type="test" name="email" placeholder="Email" class="login-input" value="<?php if (isset($_POST["email"])) { $entered_email = $_POST["email"]; echo "$entered_email";}?>">
 											</div>
+											<?php
+												if (isset($no_email)) {
+													echo '<p class="error-message">Enter your email.</p>';
+												}
+											?>
 											<div class="form-group">
 												<span class="login-label">Password:</span>
 												<input type="password" name="password" placeholder="Password" class="login-input">
 											</div>
+											<?php
+												if (isset($no_password)) {
+													echo '<p class="error-message">Enter your password.</p>';
+												}
+											?>
 											<br>
 										</div>
 										<div class="form-group pull-right">

@@ -2,6 +2,13 @@
     session_start();
     include_once "models/User.php";
 
+    if (isset($_SESSION["logged_in"])) {
+        if ($_SESSION["logged_in"] == true) {
+            header("Location: home.php");
+            exit();
+        }
+    }
+
     if ((isset($_POST["name"])) && (isset($_POST["email"])) && (isset($_POST["password"]))) {
         if ($_POST["name"] != "") {
             if ($_POST["email"] != "") {
@@ -9,7 +16,8 @@
                     try {
                         User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
                         $_SESSION["logged_in"] = true;
-                        $success = true;
+                        header("Location: account_created.php");
+                        exit();
                     }
                     catch (Exception $except) {
                         echo "There was a problem creating this account.";
@@ -36,13 +44,6 @@
             if ($_POST["password"] == "") {
                 $no_password = true;
             }
-        }
-    }
-
-    if (isset($success)) {
-        if ($success == true) {
-            header("Location: account_created.php");
-            exit();
         }
     }
 ?>
