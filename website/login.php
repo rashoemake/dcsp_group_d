@@ -1,3 +1,22 @@
+<?php
+	session_start();
+	include_once "models/User.php";
+
+	if ((isset($_POST["email"])) && (isset($_POST["password"]))) {
+		if ($_POST["email"] != "") {
+			if ($_POST["email"] != "") {
+				$user = User::get_user_by_email($_POST["email"]);
+				if ($user != Null) {
+					$apw = password_hash()
+					if ($apw == $user->get_password_hash()) {
+						setcookie("logged_in", true);
+						
+					}
+				}
+			}
+		}
+	}
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -64,12 +83,12 @@
 									<form method="post" action="login.php">
 										<div class="container">
 											<div class="form-group">
-												<span class="login-label">Username:</span>
-												<input type="username" class="login-input" id="usr">
+												<span class="login-label">email:</span>
+												<input type="test" name="email" placeholder="Email" class="login-input" value="<?php if (isset($_POST["email"])) { $entered_email = $_POST["email"]; echo "$entered_email";}?>">
 											</div>
 											<div class="form-group">
 												<span class="login-label">Password:</span>
-												<input type="password" class="login-input" id="pwd">
+												<input type="password" name="password" placeholder="Password" class="login-input">
 											</div>
 											<br>
 										</div>
