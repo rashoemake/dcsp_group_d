@@ -1,5 +1,7 @@
 <?php
 
+require("../exception/validationexception.php");
+
 class User {
     /* STATIC MEMBERS */
 
@@ -91,7 +93,7 @@ class User {
         if (preg_match("/^\d+$/", $id)) {
             $this->id = $id;
         } else {
-            die("id not of valid form");
+            throw new ValidationException("INVALID", "id");
         }
     }
 
@@ -103,7 +105,7 @@ class User {
         if (strlen($name > 1) && preg_match("/^([a-zA-Z]+)$/", $name)) {
             $this->name = $name;
         } else {
-            die("name is not of proper form");
+            throw new ValidationException("INVALID", "name");
         }
     }
 
@@ -115,7 +117,7 @@ class User {
         if (strlen($email_address) > 1 && filter_var($email_address, FILTER_VALIDATE_EMAIL)) {
             $this->email_address = $email_address;
         } else {
-            die("email address is not of proper form");
+            throw new ValidationException("INVALID", "email_address");
         }       
     }
 
@@ -151,7 +153,7 @@ class User {
         if (strlen($biography) > 1) {
             $this->biography = $biography;
         } else {
-            die("biography is not of proper form");
+            throw new ValidationException("INVALID", "biography");
         }
     }
 
@@ -226,6 +228,10 @@ class User {
     public function add_rating($rating) {
         // Get the mysql connection
         require("connect.php");
+
+        if ($rating < 1 | $rating > 5) {
+            throw new ValidationException("INVALID", "rating");
+        }
         
         $avg_rating = $this->get_avg_rating();
         $num_ratings = $this->get_num_ratings();
