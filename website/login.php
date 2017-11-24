@@ -14,13 +14,18 @@
 			if ($_POST["password"] != "") {
 				$user = User::get_user_by_email($_POST["email"]);
 				if ($user != Null) {
-					$apw = password_hash($_POST["password"], PASSWORD_BCRYPT);
-					if ($apw == $user->get_password_hash()) {
+					if (password_verify($_POST["password"], $user->get_password_hash())) {
 						$_SESSION["logged_in"] = true;
-						$_SESSION["account"] = $user.get_id();
+						$_SESSION["account"] = $user->get_id();
 						header("Location: home.php");
 						exit();
 					}
+					else {
+						$invalid = true;
+					}
+				}
+				else {
+					$invalid = true;
 				}
 			}
 			else {
@@ -77,7 +82,19 @@
 	</head>
 	<body>
 		<div class="container">
-			<?php require_once 'php_scripts/navbar.php' ?>
+			<!-- Begin Navbar -->
+			<nav class="navbar navbar-inverse">
+				<div class="container">
+					<ul class="nav navbar-nav">
+						<li class="navbar-padding"><a href="index.html"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
+						<li class="navbar-padding"><a href="about.html">About</a></li>
+						<li class="navbar-padding"><a href="#">Contact</a></li>
+					</ul>
+					<ul class="nav navbar-nav pull-right">
+						<li style="padding-right: 15px;"><a href="sign-up.php"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up </a></li>
+       				</ul>
+				</div>
+			</nav>
 
 			<br>
 
@@ -93,7 +110,7 @@
 										<div class="container">
 											<div class="form-group">
 												<span class="login-label">email:</span>
-												<input type="test" name="email" placeholder="Email" class="login-input" value="<?php if (isset($_POST["email"])) { $entered_email = $_POST["email"]; echo "$entered_email";}?>">
+												<input type="text" name="email" placeholder="Email" class="login-input" value="<?php if (isset($_POST["email"])) { $entered_email = $_POST["email"]; echo "$entered_email";}?>">
 											</div>
 											<?php
 												if (isset($no_email)) {
@@ -107,6 +124,9 @@
 											<?php
 												if (isset($no_password)) {
 													echo '<p class="error-message">Enter your password.</p>';
+												}
+												if (isset($invalid)) {
+													echo '<p class="error-message">Invalid username or password.</p>';
 												}
 											?>
 											<br>

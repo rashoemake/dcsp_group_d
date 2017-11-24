@@ -100,11 +100,12 @@ class User {
     }
 
     private function set_name($name) {
-        if (strlen($name > 1) && preg_match("/^([a-zA-Z]+)$/", $name)) {
+        /*if (strlen($name > 1) && preg_match("/^([a-zA-Z]+)$/", $name)) {
             $this->name = $name;
         } else {
             die("name is not of proper form");
-        }
+        }*/
+        $this->name = $name;
     }
 
     public function get_email_address() {
