@@ -18,6 +18,7 @@ function createuserstable($connection){
     passwordHash  VARCHAR(60) NOT NULL,
     bio           TEXT,
     disabled      BOOL,
+	type          ENUM('user','admin'),
     university_id INT,
     FOREIGN KEY fk_uni(university_id) 
     REFERENCES universities(id) 
