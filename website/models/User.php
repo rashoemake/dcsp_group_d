@@ -88,7 +88,11 @@ class User {
     }
 
     private function set_id($id) {
-        $this->id = $id;
+        if (preg_match("/^\d+$/", $id)) {
+            $this->id = $id;
+        } else {
+            die("id not of valid form");
+        }
     }
 
     public function get_name() {
@@ -96,7 +100,11 @@ class User {
     }
 
     private function set_name($name) {
-        $this->name = $name;
+        if (strlen($name > 1) && preg_match("/^([a-zA-Z]+)$/", $name)) {
+            $this->name = $name;
+        } else {
+            die("name is not of proper form");
+        }
     }
 
     public function get_email_address() {
@@ -104,7 +112,11 @@ class User {
     }
 
     private function set_email_address($email_address) {
-        $this->email_address = $email_address;
+        if (strlen($email_address) > 1 && filter_var($email_address, FILTER_VALIDATE_EMAIL)) {
+            $this->email_address = $email_address;
+        } else {
+            die("email address is not of proper form");
+        }       
     }
 
     public function get_password_hash() {
@@ -136,7 +148,11 @@ class User {
     }
 
     private function set_biography($biography) {
-        $this->biography = $biography;
+        if (strlen($biography) > 1) {
+            $this->biography = $biography;
+        } else {
+            die("biography is not of proper form");
+        }
     }
 
     public function get_disabled() {

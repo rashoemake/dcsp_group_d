@@ -1,3 +1,19 @@
+<?php
+    if(isset($_SESSION)) {
+        require_once 'User.php';
+        session_start();
+        $this_user = User::get_user_by_id($_SESSION['id']);
+        $user_name = $this_user->get_name();
+        $user_email = $this_user->get_email_address();
+        $user_school = $this_user->get_university();
+        $user_bio = $this_user->get_biography();
+        $user_binders = $this_user->get_binders();
+    } else {
+        header('Location: index.php');
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang='en'>
 	<head>
@@ -15,50 +31,44 @@
   
   <body>
     <div class="container">
-    <!-- Begin Navbar -->
-    <nav class="navbar navbar-inverse">
-      <div class="container">
-        <ul class="nav navbar-nav">
-          <li class="navbar-padding"><a href="index.php"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
-          <li class="navbar-padding"><a href="about.php">About</a></li>
-          <li class="navbar-padding"><a href="#">Contact</a></li>
-        </ul>
-        <ul class="nav navbar-nav pull-right">
-          <li><a href="#"><span class="glyphicon glyphicon-log-in glyph-padding"></span>  Login</a></li>
-          <li style="padding-right: 15px;"><a href="#"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up</a></li>          
-        </ul>
-      </div>
-    </nav>     
+
+    <?php require_once 'php_scripts/navbar.php' ?>     
     <br>
     
     <div class="panel panel-default">
       <div class="panel-body panel-content-color">
-        <h2 class="text-center">NAME</h2>
+        <h2 class="text-center"><?php echo $user_name ?></h2>
         <!-- email address -->
         <h4 class="text-left">E-mail address:</h4>
-        <p>example@yes.com</p>
+        <p><?php echo $user_email ?></p>
         
         <!-- school information -->
         <h4 class="text-left">School:</h4>
-        <p>Example University</p>
+        <p><?php echo $user_school ?></p>
         
         <!-- bio -->
-        <h4 class="text-left">Biography</h4>
-        <p>FAKE NEWS</p>
+        <h4 class="text-left">Biography:</h4>
+        <p><?php echo $user_bio ?></p>
         
         <!-- binder associations -->
         <h4 class="text-left">Binders:</h4>
         <ul class="list-unstyled">
-          <li><a href="#">Binder1</a></li>
+        <?php   
+        require_once 'Binder.php';
+            foreach($user_binders as $binder) {
+                $tmp=Binder::get_binder_by_id($id);
+                echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">Binder1</a>'.$tmp->get_name().'</li>';
+            }
+        ?>
         </ul>
         
         <br>        
-        <p class="text-left">User ID: XXXXXXX</p>
+        <p class="text-left">User ID: <?php echo $_SESSION['id'] ?></p>
       </div>
     </div>
     
     <div class="text-center">
-      <a class="btn btn-primary" href="#">Edit Profile</a>
+        <a class="btn btn-primary" href="edit-profile.php">Edit Profile</a>
     </div>
 
 
