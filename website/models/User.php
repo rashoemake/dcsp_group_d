@@ -90,7 +90,7 @@ class User {
     }
 
     private function set_id($id) {
-        if (preg_match("/^\d+$/", $id)) {
+        if (is_numeric($id)) {
             $this->id = $id;
         } else {
             throw new ValidationException("INVALID", "id");
