@@ -21,7 +21,8 @@ class User {
         }
 
         $row = $stmt->get_result()->fetch_assoc();
-        $return_value = User::from_assoc($row);
+        $return_value = new User();
+        $return_value->from_assoc($row);
         return $return_value;
     }
 
