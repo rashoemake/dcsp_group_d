@@ -194,7 +194,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <p>Quisque vitae neque amet nibh porta facilisis. Maecenas quis metus pulvinar nisi imperdiet commodo. Fusce faucibus nisi eu faucibus facilisis. Duis auctor iaculis dui eu ornare. Praesent vitae faucibus diam, nec vulputate est. Nullam ac sapien massa.</p>
+                                                    <p>Welcome to Bindr! Before you can start finding study partners, you need an account! A couple of things to consider:</p>
+                                                    <p>- We highly recommend using your real name.</p>
+                                                    <p>- Use an email you have access to.</p>
+                                                    <p>- Passwords must be n characters and are case sensitive.</p>
                                                 </div>
                                             </div>
                                             <br>
