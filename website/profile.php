@@ -1,7 +1,8 @@
 <?php
+    session_start();
+    
     if(isset($_SESSION)) {
-        require_once 'User.php';
-        session_start();
+        require_once 'models/User.php';
         $this_user = User::get_user_by_id($_SESSION['id']);
         $user_name = $this_user->get_name();
         $user_email = $this_user->get_email_address();

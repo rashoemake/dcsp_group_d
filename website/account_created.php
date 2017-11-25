@@ -33,7 +33,7 @@
                         <div class="panel-body">
                             <h3 class="text-center">Your account was successfully created!</h3>
                             <br>
-                            <p class="text-center">You will be redirected to your profile in 5 seconds.</p>
+                            <p class="text-center">You'll be redirected to a page you can add more information about yourself in 5 seconds.</p>
                             <a href=profile.php><p class="text-center">If you aren't, click here.</p></a>
                             <br>
                         </div>
@@ -46,7 +46,7 @@
         setTimeout(Redirect, 5000);
 
         function Redirect() {
-            window.location="profile.php";
+            window.location="edit-profile.php";
         }
     </script>
 </html>
