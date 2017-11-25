@@ -1,6 +1,6 @@
 <?php
 
-require("../exception/validationexception.php");
+require(dirname(__DIR__)."/exception/validationexception.php");
 
 class User {
     /* STATIC MEMBERS */

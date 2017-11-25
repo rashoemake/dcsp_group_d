@@ -80,7 +80,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group text-center">
                                                         <a href="index.php" class="btn btn-primary">Home</a>
-                                                        <input type="submit" value="Creat Account" class="btn btn-primary">
+                                                        <input type="submit" value="Create Account" class="btn btn-primary">
                                                     </div>
                                                 </div>
                                             </div>
