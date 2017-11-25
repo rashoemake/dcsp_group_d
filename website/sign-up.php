@@ -13,26 +13,42 @@
         if ($_POST["name"] != "") {
             if ($_POST["email"] != "") {
                 if ($_POST["password"] != "") {
-                    try {
-                        User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
-                        $_SESSION["logged_in"] = true;
-                        header("Location: account_created.php");
-                        exit();
+                    if ($_POST["c_password"] != "") {
+                        if ($_POST["password"] == $_POST["c_password"]) {
+                            try {
+                                User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
+                                $_SESSION["logged_in"] = true;
+                                header("Location: account_created.php");
+                                exit();
+                            }
+                            catch (Exception $except) {
+                                echo "There was a problem creating this account.";
+                                // TODO
+                                // Make this actually do something useful.
+                            }
+                        }
+                        else {
+                            $no_match = true;
+                        }
                     }
-                    catch (Exception $except) {
-                        echo "There was a problem creating this account.";
-                        // TODO
-                        // Make this actually do something useful.
+                    else {
+                        $no_c_password = true;
                     }
                 }
                 else {
                     $no_password = true;
+                    if ($_POST["c_password"] == "") {
+                        $no_c_password = true;
+                    }
                 }
             }
             else {
                 $no_email = true;
                 if ($_POST["password"] == "") {
                     $no_password = true;
+                }
+                if ($_POST["c_password"] == "") {
+                    $no_c_password = true;
                 }
             }
         }
@@ -43,6 +59,9 @@
             }
             if ($_POST["password"] == "") {
                 $no_password = true;
+            }
+            if ($_POST["c_password"] == "") {
+                $no_c_password = true;
             }
         }
     }
@@ -141,6 +160,21 @@
                                                         <?php
                                                             if (isset($no_password)) {
                                                                 echo '<p class="error-message col-sm-offset-1">A password is required.</p>';
+                                                            }
+                                                        ?>
+                                                    </div>
+                                                    <div class="row">
+                                                        <!--Confirm Password-->
+                                                        <div class="form-group col-sm-offset-1">
+                                                            <span class="field-label"> </span>
+                                                            <input type="password" name="c_password" placeholder="Confirm Password" class="info-input">
+                                                        </div>
+                                                        <?php
+                                                            if (isset($no_c_password)) {
+                                                                echo '<p class="error-message col-sm-offset-1">You must confirm your password.</p>';
+                                                            }
+                                                            if (isset($no_match)) {
+                                                                echo '<p class="error-message col-sm-offset-1">Passwords don\'t match.</p>';
                                                             }
                                                         ?>
                                                     </div>

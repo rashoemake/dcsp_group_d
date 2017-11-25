@@ -1,6 +1,6 @@
 <?php
     if(isset($_SESSION)) {
-        $context='<li style="padding-right: 15px;"><a href="logout.php"><span class="glyphicon glyphicon-log-out glyph-padding"></span>Logout</a></li>';
+        $context='<li style="padding-right: 15px;"><a href="php_scripts/logout.php"><span class="glyphicon glyphicon-log-out glyph-padding"></span>Logout</a></li>';
 
     } else {
         $context='<li><a href="login.php"><span class="glyphicon glyphicon-log-in glyph-padding"></span>Login</a></li>'."\n";
