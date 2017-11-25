@@ -1,6 +1,8 @@
 <?php
-    if(isset($_SESSION)) {
-        $context='<li style="padding-right: 15px;"><a href="php_scripts/logout.php"><span class="glyphicon glyphicon-log-out glyph-padding"></span>Logout</a></li>';
+    if(isset($_SESSION["logged_in"])) {
+        $context='<li><a href="matching.php"><span class="glyphicon glyphicon-thumbs-up glyph-padding"></span>Start Matching</a></li>';
+        $context.='<li><a href="profile.php"><span class="glyphicon glyphicon-user glyph-padding"></span>Profile</a></li>';
+        $context.='<li style="padding-right: 15px;"><a href="php_scripts/logout.php"><span class="glyphicon glyphicon-log-out glyph-padding"></span>Logout</a></li>';
 
     } else {
         $context='<li><a href="login.php"><span class="glyphicon glyphicon-log-in glyph-padding"></span>Login</a></li>'."\n";
