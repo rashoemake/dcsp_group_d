@@ -1,6 +1,70 @@
 <?php
     session_start();
     include_once "models/User.php";
+
+    if (isset($_SESSION["logged_in"])) {
+        if ($_SESSION["logged_in"] == true) {
+            header("Location: home.php");
+            exit();
+        }
+    }
+
+    if ((isset($_POST["name"])) && (isset($_POST["email"])) && (isset($_POST["password"]))) {
+        if ($_POST["name"] != "") {
+            if ($_POST["email"] != "") {
+                if ($_POST["password"] != "") {
+                    if ($_POST["c_password"] != "") {
+                        if ($_POST["password"] == $_POST["c_password"]) {
+                            try {
+                                User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
+                                $_SESSION["logged_in"] = true;
+                                header("Location: account_created.php");
+                                exit();
+                            }
+                            catch (Exception $except) {
+                                echo "There was a problem creating this account.";
+                                // TODO
+                                // Make this actually do something useful.
+                            }
+                        }
+                        else {
+                            $no_match = true;
+                        }
+                    }
+                    else {
+                        $no_c_password = true;
+                    }
+                }
+                else {
+                    $no_password = true;
+                    if ($_POST["c_password"] == "") {
+                        $no_c_password = true;
+                    }
+                }
+            }
+            else {
+                $no_email = true;
+                if ($_POST["password"] == "") {
+                    $no_password = true;
+                }
+                if ($_POST["c_password"] == "") {
+                    $no_c_password = true;
+                }
+            }
+        }
+        else {
+            $no_name = true;
+            if ($_POST["email"] == "") {
+                $no_email = true;
+            }
+            if ($_POST["password"] == "") {
+                $no_password = true;
+            }
+            if ($_POST["c_password"] == "") {
+                $no_c_password = true;
+            }
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -25,14 +89,28 @@
             .info-input {
                 width: 150px;
             }
+            .error-message {
+                color: #ff0000;
+            }
         </style>
 
         <title>Sign Up : Bindr</title>
     </head>
     <body>
         <div class="container">
-
-<?php require_once 'php_scripts/navbar.php' ?>
+            <!--Begin Navbar-->
+            <nav class="navbar navbar-inverse">
+				<div class="container">
+					<ul class="nav navbar-nav">
+							<li class="navbar-padding"><a href="index.php"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
+						<li class="navbar-padding"><a href="about.php">About</a></li>
+						<li class="navbar-padding"><a href="contact.php">Contact</a></li>
+					</ul>
+					<ul class="nav navbar-nav pull-right">
+						<li style="padding-right: 15px;"><a href="login.php"><span class="glyphicon glyphicon-log-in glyph-padding"></span> Login</a></li>
+       				</ul>
+				</div>
+			</nav>
             
             <br>
             
@@ -53,6 +131,11 @@
                                                             <span class="field-label">Name:</span>
                                                             <input type="text" name="name" placeholder="Your Full Name" class="info-input" value="<?php if (isset($_POST["name"])) { $entered_name = $_POST["name"]; echo "$entered_name";}?>">
                                                         </div>
+                                                        <?php
+                                                            if (isset($no_name)) {
+                                                                echo '<p class="error-message col-sm-offset-1">A name is required.</p>';
+                                                            }
+                                                        ?>
                                                     </div>
                                                     <br>
                                                     <div class="row">
@@ -61,14 +144,39 @@
                                                             <span class="field-label">Email:</span>
                                                             <input type="text" name="email" placeholder="Your Email Address" class="info-input" value="<?php if (isset($_POST["email"])) { $entered_email = $_POST["email"]; echo "$entered_email";}?>">
                                                         </div>
+                                                        <?php
+                                                            if (isset($no_email)) {
+                                                                echo '<p class="error-message col-sm-offset-1">An email address is required.</p>';
+                                                            }
+                                                        ?>
                                                     </div>
                                                     <br>
                                                     <div class="row">
                                                         <!--Password-->
                                                         <div class="form-group col-sm-offset-1">
                                                             <span class="field-label">Password:</span>
-                                                            <input type="password" name="password" placeholder="Create a Password" class="info-input" value="<?php if (isset($_POST["password"])) { $entered_password = $_POST["password"]; echo "$entered_password";}?>">
+                                                            <input type="password" name="password" placeholder="Create a Password" class="info-input">
                                                         </div>
+                                                        <?php
+                                                            if (isset($no_password)) {
+                                                                echo '<p class="error-message col-sm-offset-1">A password is required.</p>';
+                                                            }
+                                                        ?>
+                                                    </div>
+                                                    <div class="row">
+                                                        <!--Confirm Password-->
+                                                        <div class="form-group col-sm-offset-1">
+                                                            <span class="field-label"> </span>
+                                                            <input type="password" name="c_password" placeholder="Confirm Password" class="info-input">
+                                                        </div>
+                                                        <?php
+                                                            if (isset($no_c_password)) {
+                                                                echo '<p class="error-message col-sm-offset-1">You must confirm your password.</p>';
+                                                            }
+                                                            if (isset($no_match)) {
+                                                                echo '<p class="error-message col-sm-offset-1">Passwords don\'t match.</p>';
+                                                            }
+                                                        ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -94,30 +202,3 @@
         </div>
     </body>
 </html>
-<?php
-    if ((isset($_POST["name"])) && (isset($_POST["email"])) && (isset($_POST["password"]))) {
-        if ($_POST["name"] != "") {
-            if ($_POST["email"] != "") {
-                if ($_POST["password"] != "") {
-                    try {
-                        User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
-                    }
-                    catch (Exception $except) {
-                        echo "There was a problem creating this account.";
-                        // TODO
-                        // Make this actually do something useful.
-                    }
-                }
-                else {
-                    echo "The password field must be set!";
-                }
-            }
-            else {
-                echo "The email field must be set!";
-            }
-        }
-        else {
-            echo "The name field must be set!";
-        }
-    }
-?>
