@@ -90,7 +90,7 @@ class User {
     }
 
     private function set_id($id) {
-        if (preg_match("/^\d+$/", $id)) {
+        if (is_numeric($id)) {
             $this->id = $id;
         } else {
             throw new ValidationException("INVALID", "id");
@@ -102,7 +102,7 @@ class User {
     }
 
     private function set_name($name) {
-        if (strlen($name > 1) && preg_match("/^([a-zA-Z]+)$/", $name)) {
+        if (strlen($name) > 1 && preg_match("/^([a-zA-Z ]+)$/", $name)) {
             $this->name = $name;
         } else {
             throw new ValidationException("INVALID", "name");
