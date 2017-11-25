@@ -17,14 +17,22 @@
                         if ($_POST["password"] == $_POST["c_password"]) {
                             try {
                                 User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
+                                $user = User::get_user_by_email($_POST["email"]);
                                 $_SESSION["logged_in"] = true;
+                                $_SESSION["id"] = $user->get_id();
                                 header("Location: account_created.php");
                                 exit();
                             }
                             catch (Exception $except) {
-                                echo "There was a problem creating this account.";
-                                // TODO
-                                // Make this actually do something useful.
+                                if ($except->get_subj() == "email_address") {
+                                    $invalid_email = true;
+                                }
+                                elseif ($except->get_subj() == "name") {
+                                    $invalid_name = true;
+                                }
+                                else {
+                                    $invalid_strange = true;
+                                }
                             }
                         }
                         else {
@@ -135,6 +143,9 @@
                                                             if (isset($no_name)) {
                                                                 echo '<p class="error-message col-sm-offset-1">A name is required.</p>';
                                                             }
+                                                            if (isset($invalid_name)) {
+                                                                echo '<p class="error-message col-sm-offset-1">Invalid name.</p>';
+                                                            }
                                                         ?>
                                                     </div>
                                                     <br>
@@ -147,6 +158,9 @@
                                                         <?php
                                                             if (isset($no_email)) {
                                                                 echo '<p class="error-message col-sm-offset-1">An email address is required.</p>';
+                                                            }
+                                                            if (isset($invalid_email)) {
+                                                                echo '<p class="error-message col-sm-offset-1">Invalid email address.</p>';
                                                             }
                                                         ?>
                                                     </div>

@@ -16,7 +16,7 @@
 				if ($user != Null) {
 					if (password_verify($_POST["password"], $user->get_password_hash())) {
 						$_SESSION["logged_in"] = true;
-						$_SESSION["account"] = $user->get_id();
+						$_SESSION["id"] = $user->get_id();
 						header("Location: home.php");
 						exit();
 					}
