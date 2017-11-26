@@ -23,6 +23,13 @@
             
         <!-- Custom CSS -->
         <link rel="stylesheet" type="text/css" href="css/custom.css">
+
+        <style>
+            .big-text {
+                font-size: 56px;
+                font-style: italic;
+            }
+        </style>
     
     <title>Binders : Bindr</title>
 </html>
@@ -33,11 +40,16 @@
 
         <div class="panel-group">
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-md-6 col-md-offset-3">
                     <?php
-                        foreach ($user_binders as $binder) {
-                            $tmp=Binder::get_binder_by_id($id);
-                            echo '<div class="panel panel-default"><div class="panel-body"><h3><li><a href="home.php?binder_id='.$tmp->get_id().'">Binder1</a>'.$tmp->get_name().'</li></h3></div></div>';
+                        if (sizeof($user_binders) != 0) {
+                            foreach ($user_binders as $binder) {
+                                $tmp=Binder::get_binder_by_id($id);
+                                echo '<div class="panel panel-default"><div class="panel-body"><h3><li><a href="home.php?binder_id='.$tmp->get_id().'">Binder1</a>'.$tmp->get_name().'</li></h3></div></div>';
+                            }
+                        }
+                        else {
+                            echo '<h1 class="text-center big-text">*tumbleweed*</h1><br><h2 class="text-center">You\'re not in any Binders yet!</h2><h3 class="text-center">Start matching to find some!</h3>';
                         }
                     ?>
                 </div>
