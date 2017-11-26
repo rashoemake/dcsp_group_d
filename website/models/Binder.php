@@ -4,15 +4,49 @@ class Binder {
     /* STATIC MEMBERS */
 
     // Static Variables
-    public static $tablename = "binders";
+    public static $tablename = "binder";
 
     // Static Methods
     public static function get_binder_by_id($id) {
-        // TODO
+        // Create SQL connection
+        require 'connect.php';
+        
+        // Query for the id
+        if (!($stmt = $conn->prepare("SELECT * FROM `binder` WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param("i", $id);
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        
+        $row = $stmt->get_result()->fetch_assoc();
+        $return_value = new Binder();
+        $return_value->from_assoc($row);
+        return $return_value;
     }
 
     public static function create_binder($name) {
-        // TODO
+        $new_binder = new Binder();
+        $new_binder->set_name($name);
+        
+        //Create SQL connection
+        require 'connect.php';
+        
+        //Query to create binder
+        if (!($stmt = $conn->prepare("INSERT INTO `binder`(name) VALUES (?)"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('s',$new_binder->get_name());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        
+        echo isset($conn->error) ? $conn->error : "";
+        
+        return $conn->insert_id;
     }
 
 
@@ -27,61 +61,157 @@ class Binder {
 
     // Getters and Setters (Validation)
     public function get_id() {
-        // TODO
+        return $this->id;
     }
 
     private function set_id($id) {
-        // TODO
+       if (preg_match("/^(\d+)$/", $id)) {
+           $this->id = $id;
+       } else {
+           die("id not of valid form");
+       }
     }
 
     public function get_name() {
-        // TODO
+        return $this->name;
     }
 
-    private set_name($name) {
-        // TODO
+    private function set_name($name) {
+        if (preg_match("/^([\w\d ]+)$/", $name)) {
+            $this->name = $name;
+        } else {
+            throw new ValidationException("Name may contain only alphanumerics and spaces", "Name");
+        }
     }
 
     public function get_description() {
-        // TODO
+        return $this->description;
     }
 
     private function set_description($description) {
-        // TODO
+        if (strlen($description) > 1) {
+            $this->description = $description;
+        } else {
+            throw new ValidationException("Description must contain at least 1 character", "Description");
+        }
     }
 
     public function get_disabled() {
-        // TODO
+        return $this->disabled;
     }
 
     private function set_disabled($disabled) {
-        // TODO
+        if (preg_match("/^0|1$/", $disabled)) {
+            $this->disabled = $disabled;
+        } else {
+            die("disabled is not of a valid boolean value");
+        }
     }
 
     public function get_modified_date() {
-        // TODO
+        return $this->modifiedDate;
     }
 
 
     // Instance Methods
+    
+    //Inserts user_id and binder_id tuple into user_binders table
     public function add_user($user_id) {
-        // TODO
+        require 'connect.php';
+        
+        if (!($stmt = $conn->prepare("INSERT INTO `user_binders`(user_id, binder_id) VALUES(?,?)"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('ii', $user_id, $this->get_id());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        
+        return $conn->insert_id;
     }
-
+    
+    //Remove user_id, binder_id tuple from user_binders table
     public function remove_user($user_id) {
-        // TODO
+        require 'connect.php';
+        
+        if (!($stmt = $conn->prepare("DELETE FROM `user_binders` WHERE user_id=? AND binder_id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('ii', $user_id, $this->get_id());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        
+        return $conn->insert_id;
     }
 
     public function update_description($description) {
-        // TODO
+        require 'connect.php';
+        
+        //validate first then execute update query
+        $this->set_description($description);
+        if (!($stmt = $conn->prepare("UPDATE `binder` SET bio=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('s', $this->get_description());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
     public function update_disabled($disable) {
-        // TODO
+        require 'connect.php';
+        
+        //validate first then execute update query
+        $this->set_disabled($disable);
+        if (!($stmt = $conn->prepare("UPDATE `binder` SET disabled=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('s', $this->get_disabled());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
     public function update_name($name) { 
-        // TODO
+        require 'connect.php';
+        
+        //validate first then execute update query
+        $this->set_name($name);
+        if (!($stmt = $conn->prepare("UPDATE `binder` SET name=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('s', $this->get_name());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+    }
+    
+    public function from_assoc($assoc) {
+        if (isset($assoc['id'])) {
+            $this->set_id($assoc['id']);
+        }
+        
+        if (isset($assoc['name'])) {
+            $this->set_name($assoc['name']);
+        }
+        
+        if (isset($assoc['bio'])) {
+            $this->set_description($assoc['bio']);
+        }
+        
+        if (isset($assoc['disabled'])) {
+            $this->set_disabled($assoc['disabled']);
+        }
+        
+        if (isset($assoc['modifiedDate'])) {
+            $this->modifiedDate = $assoc['modifiedDate'];
+        }
     }
 }
 
