@@ -55,11 +55,11 @@
         <h4 class="text-left">Binders:</h4>
         <ul class="list-unstyled">
         <?php   
-        require_once 'Binder.php';
+        /*require_once 'Binder.php';
             foreach($user_binders as $binder) {
                 $tmp=Binder::get_binder_by_id($id);
                 echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">Binder1</a>'.$tmp->get_name().'</li>';
-            }
+            }*/
         ?>
         </ul>
         

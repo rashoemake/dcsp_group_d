@@ -13,7 +13,7 @@ class University {
 		require("connect.php");
 
         // Query for the City
-        if (!($stmt = $conn->prepare("SELECT * FROM `$tablename` WHERE id=?"))) {
+        if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("s", $city);
@@ -32,7 +32,7 @@ class University {
 		require("connect.php");
 		
 		// Query for the City
-		if (!($stmt = $conn->prepare("SELECT * FROM `$tablename` WHERE id=?"))) {
+		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$stmt->bind_param("s", $name);
@@ -51,7 +51,7 @@ class University {
 		require("connect.php");
 		
 		// Query for the City
-		if (!($stmt = $conn->prepare("SELECT * FROM `$tablename` WHERE id=?"))) {
+		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$stmt->bind_param("s", $state);
@@ -90,7 +90,7 @@ class University {
 	/* INSTANCE MEMBERS */
 	
     // Instance Variables
-    private $id
+    private $id;
 	private $name;
 	private $city;
 	private $state;
@@ -104,39 +104,39 @@ class University {
 	// Getters and Setters
 	// TODO Validation: 
 	public function get_id() {
-		return(this->id);
+		return($this->id);
 	}
 	
 	private function set_id($id) {
-		this->id = $id;
+		$this->id = $id;
 	}
 	
 	public function get_name() {
-		return(this->name);
+		return($this->name);
 	}
 	
 	private function set_name($name) {
-		this->name = $name;
+		$this->name = $name;
 	}
 	
 	public function get_city() {
-		return(this->city);
+		return($this->city);
 	}
 	
 	private function set_city($city) {
-		this->city = $city;
+		$this->city = $city;
 	}
 	
 	public function get_state() {
-		return(this->state);
+		return($this->state);
 	}
 	
 	private function set_state($state) {
-		this->state = $state;
+		$this->state = $state;
 	}
 	
 	public function get_modifiedDate() {
-		return(this->modifiedDate);
+		return($this->modifiedDate);
 	}
 	
 	// Instance Methods
@@ -145,7 +145,7 @@ class University {
         require("connect.php");
 		
 		// Query using id to set name
-		if (!($stmt = $conn->prepare("UPDATE `$tablename` SET name=? WHERE id=?")) {
+		if (!($stmt = $conn->prepare("UPDATE `universities` SET name=? WHERE id=?"))) {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$id = $this->get_id();
@@ -164,7 +164,7 @@ class University {
         require("connect.php");
 		
 		// Query using id to set state
-		if (!($stmt = $conn->prepare("UPDATE `$tablename` SET state=? WHERE id=?")) {
+		if (!($stmt = $conn->prepare("UPDATE `universities` SET state=? WHERE id=?"))) {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$id = $this->get_id();
@@ -183,7 +183,7 @@ class University {
 		require("connect.php");
 		
 		// Query using id to set name
-		if (!($stmt = $conn->prepare("UPDATE `$tablename` SET city=? WHERE id=?")) {
+		if (!($stmt = $conn->prepare("UPDATE `universities` SET city=? WHERE id=?"))) {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$id = $this->get_id();
@@ -216,7 +216,8 @@ class University {
 
         if (isset($assoc["modifiedDate"])) {
             $this->set_modified_date($assoc["modifiedDate"]);
-        }
+		}
+	}
 
 }
 ?>
