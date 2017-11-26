@@ -12,43 +12,51 @@
     if ((isset($_POST["name"])) && (isset($_POST["email"])) && (isset($_POST["password"]))) {
         if ($_POST["name"] != "") {
             if ($_POST["email"] != "") {
-                if ($_POST["password"] != "") {
-                    if ($_POST["c_password"] != "") {
-                        if ($_POST["password"] == $_POST["c_password"]) {
-                            try {
-                                User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
-                                $user = User::get_user_by_email($_POST["email"]);
-                                $user->update_disabled(false);
-                                $_SESSION["logged_in"] = true;
-                                $_SESSION["id"] = $user->get_id();
-                                header("Location: account_created.php");
-                                exit();
+                $email_match = User::get_user_by_email($_POST["email"]);
+                if (is_null($email_match->get_id())) {
+                    if ($_POST["password"] != "") {
+                        if ($_POST["c_password"] != "") {
+                            if ($_POST["password"] == $_POST["c_password"]) {
+                                try {
+                                    User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
+                                    $user = User::get_user_by_email($_POST["email"]);
+                                    $user->update_disabled(false);
+                                    $user->update_type("user");
+                                    $_SESSION["logged_in"] = true;
+                                    $_SESSION["id"] = $user->get_id();
+                                    $_SESSION["type"] = $user->get_type();
+                                    header("Location: account_created.php");
+                                    exit();
+                                }
+                                catch (Exception $except) {
+                                    if ($except->get_subj() == "email_address") {
+                                        $invalid_email = true;
+                                    }
+                                    elseif ($except->get_subj() == "name") {
+                                        $invalid_name = true;
+                                    }
+                                    else {
+                                        $invalid_strange = true;
+                                    }
+                                }
                             }
-                            catch (Exception $except) {
-                                if ($except->get_subj() == "email_address") {
-                                    $invalid_email = true;
-                                }
-                                elseif ($except->get_subj() == "name") {
-                                    $invalid_name = true;
-                                }
-                                else {
-                                    $invalid_strange = true;
-                                }
+                            else {
+                                $no_match = true;
                             }
                         }
                         else {
-                            $no_match = true;
+                            $no_c_password = true;
                         }
                     }
                     else {
-                        $no_c_password = true;
+                        $no_password = true;
+                        if ($_POST["c_password"] == "") {
+                            $no_c_password = true;
+                        }
                     }
                 }
                 else {
-                    $no_password = true;
-                    if ($_POST["c_password"] == "") {
-                        $no_c_password = true;
-                    }
+                    $email_in_use = true;
                 }
             }
             else {
@@ -162,6 +170,9 @@
                                                             }
                                                             if (isset($invalid_email)) {
                                                                 echo '<p class="error-message col-sm-offset-1">Invalid email address.</p>';
+                                                            }
+                                                            if (isset($email_in_use)) {
+                                                                echo '<p class="error-message col-sm-offset-1">This email is already in use.</p>';
                                                             }
                                                         ?>
                                                     </div>
