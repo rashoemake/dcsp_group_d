@@ -58,9 +58,9 @@
         <?php   
         require_once 'models/Binder.php';
             foreach($user_binders as $binder) {
-                $tmp=Binder::get_binder_by_id($id);
-                echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">Binder1</a>'.$tmp->get_name().'</li>';
-            } //edit-profile.php doesn't work properly unless this is commented out atm because the code to make this work isn't there yet.
+                $tmp=Binder::get_binder_by_id($binder);
+                echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">'.$tmp->get_name().'</a></li>';
+            }
         ?>
         </ul>
         

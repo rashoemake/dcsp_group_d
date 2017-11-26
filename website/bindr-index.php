@@ -1,6 +1,7 @@
 <?php
     session_start();
     require_once "models/User.php";
+    require_once "models/Binder.php";
 
     if (!(isset($_SESSION["logged_in"]))) {
         header("Location: index.php");
@@ -44,8 +45,10 @@
                     <?php
                         if (sizeof($user_binders) != 0) {
                             foreach ($user_binders as $binder) {
-                                $tmp=Binder::get_binder_by_id($id);
-                                echo '<div class="panel panel-default"><div class="panel-body"><h3><li><a href="home.php?binder_id='.$tmp->get_id().'">Binder1</a>'.$tmp->get_name().'</li></h3></div></div>';
+                                $tmp=Binder::get_binder_by_id($binder);
+                                $name = $tmp->get_name();
+                                $description = $tmp->get_description();
+                                echo '<div class="panel panel-default"><div class="panel-body"><h2><a href="home.php?binder_id='.$tmp->get_id().'">'.$name.'</a></h2><h4>'.$description.'</h4></div></div><br>';
                             }
                         }
                         else {

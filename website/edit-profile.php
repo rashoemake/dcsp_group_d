@@ -31,41 +31,7 @@
       }
     }
     // Update School
-    if (($_POST["user-school"] != Null) && ($_POST["user-school"] != "")) {
-      $school_id = $user->get_university_id();
-      if (($school_id != Null) && ($school_id != "")) {
-        $new_school = University::get_university_by_name($_POST["user-school"]);
-        if ($new_school != Null) {
-          if ($_POST["user-school"] != $school->get_name()) {
-          try {
-              $user->update_university_id($new_school->get_id());
-              $school_changed = true;
-            }
-            catch (Exception $s_except) {
-              $invalid_school = true;
-            }
-          }
-        }
-        else {
-          $invalid_school = true;
-        }
-      }
-      else {
-        $new_school = University::get_university_by_name($_POST["user-school"]);
-        if ($new_school != Null) {
-          try {
-            $user->update_unversity_id($new_school->get_id());
-            $school_changed = true;
-          }
-          catch (Exception $s_except) {
-            $invalid_school = true;
-          }
-        }
-        else {
-          $invalid_school = true;
-        }
-      }
-    }
+    // TODO?
     // Update Bio
     if ($_POST["user-bio"] != $user->get_biography()) {
       try {
@@ -151,15 +117,12 @@ errors
                 ?>
                 <div class="form-group">
                   <label for="user-school"><h4>School</h4></label>
-                  <input class="form-control" type="text" name="user-school" id="user-school" placeholder="School" value="<?php if (isset($_SESSION["id"])) { $user = User::get_user_by_id($_SESSION["id"]); if (($user->get_university_id() != Null) && ($user->get_university_id() != "")) { echo $user->get_university_id(); }}?>">
+                  <?php
+                    // TODO
+                  ?>
                 </div>
                 <?php
-                  if (isset($invalid_school)) {
-                    echo '<p class="error-message">Invalid school.</p>';
-                  }
-                  if (isset($school_changed)) {
-                    echo '<p class="success-message">School changed successfully!</p>';
-                  }
+                  // TODO
                 ?>
                 <div class="form-group">
                   <label for="binder-description"><h4>Biography</h4></label>
