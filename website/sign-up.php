@@ -19,6 +19,7 @@
                                 User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
                                 $user = User::get_user_by_email($_POST["email"]);
                                 $user->update_disabled(false);
+                                $user->update_type("user");
                                 $_SESSION["logged_in"] = true;
                                 $_SESSION["id"] = $user->get_id();
                                 header("Location: account_created.php");
