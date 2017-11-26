@@ -423,6 +423,24 @@ class User {
             header('HTTP/1.1 500 Internal Server Error');
         }
     }
+
+    public function update_type($user_type) {
+        // Get the mysql connection
+        require("connect.php");
+
+        if (!($stmt = $conn->prepare("UPDATE `users` SET `type`=? WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("si", $user_type, $id);
+
+        //Runs validation
+        $this->set_type($user_type);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+    }
 }
 
 ?>
