@@ -1,5 +1,7 @@
 <?php
 
+require_once(dirname(__DIR__)."/exception/validationexception.php");
+
 class Binder {
     /* STATIC MEMBERS */
 
@@ -21,7 +23,7 @@ class Binder {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
-        $row = $stmt->get_result()->fetch_assoc();
+        $row = $stmt->get_result()->fetch_assoc();       
         $return_value = new Binder();
         $return_value->from_assoc($row);
         return $return_value;
@@ -156,10 +158,10 @@ class Binder {
         
         //validate first then execute update query
         $this->set_description($description);
-        if (!($stmt = $conn->prepare("UPDATE `binder` SET bio=?"))) {
+        if (!($stmt = $conn->prepare("UPDATE `binder` SET bio=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
-        $stmt->bind_param('s', $this->get_description());
+        $stmt->bind_param('si', $this->get_description(), $this->get_id());
         
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -171,10 +173,10 @@ class Binder {
         
         //validate first then execute update query
         $this->set_disabled($disable);
-        if (!($stmt = $conn->prepare("UPDATE `binder` SET disabled=?"))) {
+        if (!($stmt = $conn->prepare("UPDATE `binder` SET disabled=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
-        $stmt->bind_param('s', $this->get_disabled());
+        $stmt->bind_param('si', $this->get_disabled(), $this->get_id());
         
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -186,14 +188,36 @@ class Binder {
         
         //validate first then execute update query
         $this->set_name($name);
-        if (!($stmt = $conn->prepare("UPDATE `binder` SET name=?"))) {
+        if (!($stmt = $conn->prepare("UPDATE `binder` SET name=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
-        $stmt->bind_param('s', $this->get_name());
+        $stmt->bind_param('si', $this->get_name(), $this->get_id());
         
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
         }
+    }
+    
+    public function get_binder_membership() {
+        require 'connect.php';
+        
+        if (!($stmt = $conn->prepare("SELECT `user_id` FROM `user_binders` WHERE binder_id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('i', $this->get_id());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $membership = array();
+        $result_obj = $stmt->get_result();
+        for ($i = 0; $i < $result_obj->num_rows; $i++) {
+            $result_obj->data_seek($i);
+            $result_row = $result_obj->fetch_assoc();
+            $membership[$i] = $result_row['user_id'];
+        }
+        
+        return $membership;
     }
     
     public function from_assoc($assoc) {
