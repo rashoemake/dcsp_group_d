@@ -4,7 +4,7 @@
     if (isset($_SESSION["logged_in"])) {
         require_once 'models/User.php';
         $this_user = User::get_user_by_id($_SESSION['id']);
-        if ($this_user->get_type() == "admin") {
+        if ($_SESSION["type"] == "admin") {
             header('Location: admin-profile.php');
             exit();
         }
