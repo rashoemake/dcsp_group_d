@@ -1,8 +1,31 @@
 <?php
+  $message=$message_err="";
   session_start();
 
-  if (!(isset($_SESSION["logged_in"]))) {
-    header("Location: index.php");
+//  if (!(isset($_SESSION["logged_in"]))) {
+//    header("Location: index.php");
+//  }
+  
+  if (isset($_GET['binder_id'])) {
+      require 'models/Binder.php';
+      $this_binder = Binder::get_binder_by_id($_GET['binder_id']);
+      
+      if (empty($this_binder)) {
+          die('$this_binder is empty: binder must not exist');
+      }
+      
+   if (isset($_POST['message'])) {
+      require_once 'models/Message.php';
+      try {
+          $message=$_POST['message'];
+          Message::create_message($message, 2, $this_binder->get_id());
+      } catch (ValidationException $ex) {
+          $message_err = $ex->get_msg();
+      }
+  }
+      
+  } else {
+      die('$_GET[binder_id] is not set');
   }
 ?>
 <!DOCTYPE html>
@@ -17,7 +40,22 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     
-		<title>Welcome to BINDR!</title>
+    <title><?php echo $this_binder->get_name() ?></title>
+    
+    <style>
+        .error {color:#ff0000;}
+        .message {
+            border-style: solid;
+            border-width: 1px;
+            padding: 5px;
+        }
+    </style>
+    <script>
+        function clearField(ident)
+        {
+            document.getElementById(ident).innerHTML = ""
+        }
+    </script>
 	</head>
   
   <body>
@@ -35,7 +73,7 @@
             <li class="nav-padding"><a class="nav-text" href="#">Propose User to Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="edit-binder.php">Edit this Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="#message">Post a message</a></li>
-            <li class="nav-padding"><a class="nav-text" href="#">Leave this Binder</a></li>
+            <!-- <li class="nav-padding"><a class="nav-text" href="#">Leave this Binder</a></li> -->
           </ul>
         </div> <!-- end col-sm-2 -->
         
@@ -46,24 +84,31 @@
             
               <!-- binder name -->
               <div class="text-center">
-                <h2 id="binder-name">Binder Name Here</h2>
+                <h3 id="binder-name"><?php echo $this_binder->get_name() ?></h3>
               </div><br>
               <!-- binder description -->
               
               <div class="text-left">
                 <h4>Binder Description:</h4>
-                <p id="binder-description"></p>
+                <p id="binder-description"><?php echo $this_binder->get_description() ?></p>
               </div><br>
               
               <!-- list of binder members -->
               <div class="text-left">
                 <h4>Binder Members:</h4>
-                <ul id="binder-members"></ul>
+                <ul id="binder-members">
+                    <?php
+                        $members = $this_binder->get_binder_membership();
+                        foreach($members as $user_id) {
+                            echo "<li>" . match_user_id($user_id) . "</li>";
+                        }
+                    ?>
+                </ul>
               </div><br>
               
               <!-- binder id -->
               <div class="text-left">
-                <p id="binder-id">Binder ID:</p>
+                  <p id="binder-id">Binder ID: <?php echo $this_binder->get_id() ?></p>
               </div>
             </div>
           </div> <!-- end content panel -->
@@ -73,9 +118,17 @@
       <!-- messages retrieved from the database -->
       <div class="panel panel-default">
         <div class="panel-body panel-content-color">
-            <h2 style="border-bottom: black 2px solid;">Binder Messages</h2>
-            <p>Some message</p>
-            <p>Author: USER  Date: XX/XX/XXXX</p>
+            <h3>Messages</h3>
+            <?php
+                require_once 'models/Message.php';
+                $message_arr = Message::get_message_by_binder_id($this_binder->get_id());
+                foreach($message_arr as $mssg) {
+                    echo '<div class="message">';
+                    echo "<p>" . $mssg->get_body() . "</p>";
+                    echo "<p>Author: " . match_user_id($mssg->get_user_id()) . "  Date: " . $mssg->get_createdDate();
+                    echo "</div><br>";
+                }
+            ?>           
         </div>
       </div>
       
@@ -84,13 +137,14 @@
         <div class="panel-body panel-content-color">
         
           <!-- message submission form -->
-          <form id="message" method="post"> <!-- add action -->
+          <form id="message-form" method="post" action="<?php echo "home.php?binder_id=".$this_binder->get_id() ?>">
             <div class="form-group">
-              <label for="message"><h3>Enter your message below</h3></label>
-              <textarea class="form-control" rows="3" id="message"></textarea><br>
-              <button type="submit" class="btn btn-primary">Submit</button>
+                <label for="message"><h3>Enter your message below</h3></label>
+                <span class="error"><?php echo $message_err ?></span>
+              <textarea class="form-control" rows="3" id="message" name="message"><?php echo $message ?></textarea><br>
+              <input type="submit" class="btn btn-primary" value="Submit">
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <a href="home.php" class="btn btn-primary">Cancel</a>
+              <input type="reset" class="btn btn-primary" value="Reset" onclick="clearField('message')">
             </div>
           </form>
         </div>
@@ -101,3 +155,13 @@
     </div> <!-- end document container -->
   </body>  
 </html>
+
+<?php
+
+//returns the name of a user with the given id
+function match_user_id($user_id) {
+    require_once 'models/User.php';
+    
+    $user = User::get_user_by_id($user_id);
+    return $user->get_name();
+}
