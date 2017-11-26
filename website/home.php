@@ -71,7 +71,7 @@
           <ul class="list-unstyled">
             <li><h3><h3 class="text-center" style="border-bottom: 1px solid black;">Navigation</h3></h3></li>
             <li class="nav-padding"><a class="nav-text" href="#">Propose User to Binder</a></li>
-            <li class="nav-padding"><a class="nav-text" href="edit-binder.php">Edit this Binder</a></li>
+            <li class="nav-padding"><a class="nav-text" href="<?php echo "edit-binder.php?binder_id=".$this_binder->get_id() ?>">Edit this Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="#message">Post a message</a></li>
             <!-- <li class="nav-padding"><a class="nav-text" href="#">Leave this Binder</a></li> -->
           </ul>

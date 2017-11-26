@@ -79,7 +79,7 @@ class Binder {
     }
 
     private function set_name($name) {
-        if (preg_match("/^([\w\d ]+)$/", $name)) {
+        if (strlen($name) > 1 && (preg_match("/^([\w\d ]+)$/", $name))) {
             $this->name = $name;
         } else {
             throw new ValidationException("Name may contain only alphanumerics and spaces", "Name");
