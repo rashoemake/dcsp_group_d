@@ -3,12 +3,26 @@
 class Match {
     /* STATIC MEMBERS */
 
-    // Static Variables
-    public static $tablename = "matches";
-
     // Static Methods
     public static function create_match($user1_id, $user2_id) {
-        // TODO
+        $new_match = new Match();
+        $new_match->set_user1_id($user1_id);
+        $new_match->set_user2_id($user2_id);
+
+        // Get the mysql connection
+		require("connect.php");
+        
+        // Query for the ID
+        if (!($stmt = $conn->prepare("INSERT INTO `matches` (user1_id, user2_ud) VALUES (?, ?)"))) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $stmt->bind_param("sss", $new_user->get_email_address(), $new_user->get_name());
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        return $conn->insert_id;
     }
 
 
@@ -22,54 +36,115 @@ class Match {
     private $modifiedDate;
 
     // Getters and Setters (Validation)
+    public function get_id() {
+        return $this->id;
+    }
+
+    private function set_id($id) {
+        $this->id = $id;
+    }
+
     public function get_user1_id() {
-        // TODO
+        return $this->user1_id;
     }
 
     private function set_user1_id($id) {
-        // TODO
+        $this->user1_id = $id;
     }
 
     public function get_user2_id() {
-        // TODO
+        return $this->user2_id;
     }
 
     private function set_user2_id($id) {
-        // TODO
+        $this->user2_id = $id;
     }
 
     public function get_user1_approved() {
-        // TODO
+        return $this->user1_approved;
     }
 
     private function set_user1_approved($approved) {
-        // TODO
+        $this->user1_approved = $approved;
     }
 
     public function get_user2_approved() {
-        // TODO
+        return $this->user2_approved;
     }
 
     private function set_user2_approved($approved) {
-        // TODO
+        $this->user2_approved = $approved;
     }
 
     public function get_modified_date() {
-        // TODO
+        return $this->modifiedDate;
     }
 
 
     // Instance Methods
-    public function __construct($user1_id, $user2_id) {
-        // TODO
+    public function from_assoc($assoc) {
+        if (isset($assoc["id"])) {
+            $this->set_id($assoc["id"]);
+        }
+
+        if (isset($assoc["user1_id"])) {
+            $this->set_user1_id($assoc["user1_id"]);
+        }
+        
+        if (isset($assoc["user2_id"])) {
+            $this->set_user2_id($assoc["user2_id"]);
+        }
+
+        if (isset($assoc["user1_approved"])) {
+            $this->set_user1_approved($assoc["user1_approve"]);
+        }
+
+        if (isset($assoc["user2_approved"])) {
+            $this->set_user2_approved($assoc["user2_approve"]);
+        }
+
+        if (isset($assoc["modifiedDate"])) {
+            $this->set_modified_date($assoc["modifiedDate"]);
+        }
     }
 
+
     public function update_user1_approved($approved) {
-        // TODO
+        // Get the mysql connection
+        require("connect.php");
+        
+        // Query for the ID
+        if (!($stmt = $conn->prepare("UPDATE `matches` SET user1_approve=? WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("ii", intval($approved), $id);
+
+        // Runs validation
+        $this->set_user1_approved($approved);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 
     public function update_user2_approved($approved) {
-        // TODO
+        // Get the mysql connection
+        require("connect.php");
+        
+        // Query for the ID
+        if (!($stmt = $conn->prepare("UPDATE `matches` SET user2_approve=? WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("ii", intval($approved), $id);
+
+        // Runs validation
+        $this->set_user2_approved($approved);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
 }
 
