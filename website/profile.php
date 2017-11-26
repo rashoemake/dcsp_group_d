@@ -1,7 +1,7 @@
 <?php
     session_start();
     
-    if(isset($_SESSION)) {
+    if(isset($_SESSION["logged_in"])) {
         require_once 'models/User.php';
         $this_user = User::get_user_by_id($_SESSION['id']);
         $user_name = $this_user->get_name();
@@ -11,6 +11,7 @@
         $user_binders = $this_user->get_binders();
     } else {
         header('Location: index.php');
+        exit();
     }
 
 ?>

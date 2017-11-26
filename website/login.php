@@ -4,7 +4,7 @@
 
 	if (isset($_SESSION["logged_in"])) {
         if ($_SESSION["logged_in"] == true) {
-            header("Location: home.php");
+            header("Location: bindr-index.php");
             exit();
         }
     }
@@ -17,7 +17,7 @@
 					if (password_verify($_POST["password"], $user->get_password_hash())) {
 						$_SESSION["logged_in"] = true;
 						$_SESSION["id"] = $user->get_id();
-						header("Location: home.php");
+						header("Location: bindr-index.php");
 						exit();
 					}
 					else {

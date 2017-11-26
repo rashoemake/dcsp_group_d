@@ -50,6 +50,7 @@ class User {
         $new_user = new User();
         $new_user->set_email_address($email);
         $new_user->set_name($name);
+        $new_user->set_type("user");
 
         $new_user->set_password_hash(password_hash($password, PASSWORD_BCRYPT));
 
@@ -83,6 +84,7 @@ class User {
     private $disabled;
     private $modifiedDate;
     private $university_id;
+    private $type;
 
     // Getters and Setters (Validation)
     // TODO: VALIDATION
@@ -180,6 +182,19 @@ class User {
 
     private function set_modified_date($modifiedDate) {
         $this->modifiedDate = $modifiedDate;
+    }
+
+    public function get_type() {
+        return $this->type;
+    }
+
+    private function set_type($type) {
+        if (($type == "user") || ($type == "admin")) {
+            $this->type = $type;
+        }
+        else {
+            throw new ValidationException("INVALID", "type");
+        }
     }
 
 

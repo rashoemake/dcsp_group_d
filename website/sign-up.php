@@ -18,6 +18,7 @@
                             try {
                                 User::create_user($_POST["email"], $_POST["password"], $_POST["name"]);
                                 $user = User::get_user_by_email($_POST["email"]);
+                                $user->update_disabled(false);
                                 $_SESSION["logged_in"] = true;
                                 $_SESSION["id"] = $user->get_id();
                                 header("Location: account_created.php");
@@ -192,6 +193,11 @@
                                                             }
                                                         ?>
                                                     </div>
+                                                    <?php
+                                                        if (isset($invalid_strange)) {
+                                                            echo '<p class="error-message col-sm-offset-1">An error occured.</p>';
+                                                        }
+                                                    ?>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <p>Welcome to Bindr! Before you can start finding study partners, you need an account! A couple of things to consider:</p>

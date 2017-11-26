@@ -3,6 +3,11 @@
   require_once "models/User.php";
   require_once "models/University.php";
 
+  if (!(isset($_SESSION["logged_in"]))) {
+    header("Location: index.php");
+    exit();
+  }
+
   if ((isset($_POST["user-name"])) && (isset($_POST["user-email"])) && (isset($_POST["user-school"])) && (isset($_POST["user-bio"]))) {
     $user = User::get_user_by_id($_SESSION["id"]);
     // Update Name
