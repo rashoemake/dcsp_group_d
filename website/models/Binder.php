@@ -119,6 +119,8 @@ class Binder {
     public function add_user($user_id) {
         require 'connect.php';
         
+        /*needs to first check if the user is already in the database*/
+        
         if (!($stmt = $conn->prepare("INSERT INTO `user_binders`(user_id, binder_id) VALUES(?,?)"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
@@ -134,6 +136,8 @@ class Binder {
     //Remove user_id, binder_id tuple from user_binders table
     public function remove_user($user_id) {
         require 'connect.php';
+        
+        /*needs to first check if the user is already in the database*/
         
         if (!($stmt = $conn->prepare("DELETE FROM `user_binders` WHERE user_id=? AND binder_id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');

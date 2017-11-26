@@ -258,7 +258,27 @@ class User {
     }
 
     public function get_binders() {
-        // TODO
+        require 'connect.php';
+        
+        if (!($stmt = $conn->prepare("SELECT binder_id FROM `user_binders` WHERE user_id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('i', $this->get_id());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $binder_list = array();
+        $result_obj = $stmt->get_result();
+        
+        //extract binder IDs
+        for ($i = 0; $i < $result_obj->num_rows; $i++) {
+            $result_obj->data_seek($i);
+            $results = $result_obj->fetch_assoc();
+            $binder_list[$i] = $results['binder_id'];
+        }
+        
+        return $binder_list;
     }
 
     public function get_matches() {
