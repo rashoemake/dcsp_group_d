@@ -111,7 +111,7 @@ class Message {
 
     private function set_body($body) {
         if (strlen($body) < 1) {
-            throw new Message_body_exception();
+            throw new ValidationException("Biography must be greater than 1 character", "Biography");
         } else {
             $this->body = $body;
         }        
@@ -196,11 +196,4 @@ class Message {
     }
 }
 
-//custom exception for body validation errors
-class Message_body_exception extends Exception {
-    public function errorMessage() {
-        $msg = "Message body must have at least one character";
-        return $msg;
-    }
-}
 ?>
