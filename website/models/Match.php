@@ -27,8 +27,6 @@ class Match {
 
     public static function suggest_user($user_id) {
         // Return any Users that have already matched $user_id
-        $pre_matched = array();
-
         // Get the mysql connection
         require("connect.php");
         require_once("User.php");
