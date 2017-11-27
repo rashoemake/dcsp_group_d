@@ -75,6 +75,34 @@ class Binder {
         return $conn->insert_id;
     }
 
+    public static function get_recent_additions($user_id) {
+        // Get the mysql connection
+        require("connect.php");
+        require("User.php");
+        
+        // Query for the ID
+        if (!($stmt = $conn->prepare("SELECT binder.* FROM `user_binders` INNER JOIN `binder` ON user_binders.binder_id = binder.id WHERE user_binders.user_id=? AND user_binders.modifiedDate >= DATE_SUB(NOW(), INTERVAL 1 DAY)"))) {
+            header('HTTP/1.1 500 Internal Server Error');	
+        }
+        $stmt->bind_param("i", $user_id);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        $result = $stmt->get_result();
+        $return_value = array();
+        if ($result->num_rows > 0) {
+            foreach ($result->fetch_all(MYSQLI_ASSOC) as $row) {
+                $binder = new Binder();
+                $binder->from_assoc($row);
+                $return_value->array_push($binder);
+            }
+        }
+
+        return $return_value
+    }
+
 
     /* INSTANCE MEMBERS */
 
