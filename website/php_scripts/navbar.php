@@ -20,7 +20,6 @@
         <ul class="nav navbar-nav">
           <?php echo $home_context ?>
           <li class="navbar-padding"><a href="about.php">About</a></li>
-          <li class="navbar-padding"><a href="#">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
           <?php echo $context ?>      
