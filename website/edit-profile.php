@@ -31,7 +31,15 @@
       }
     }
     // Update School
-    // TODO?
+    if (($_POST["user-school"] != $user->get_university_id()) && ($_POST["user-school"] != Null)) {
+      try {
+        $user->update_university_id($_POST["user-school"]);
+        $school_changed = true;
+      }
+      catch (Exception $s_except) {
+        $invalid_school = true;
+      }
+    }
     // Update Bio
     if ($_POST["user-bio"] != $user->get_biography()) {
       try {
@@ -118,11 +126,29 @@ errors
                 <div class="form-group">
                   <label for="user-school"><h4>School</h4></label>
                   <?php
-                    // TODO
+                    $schools = University::get_all_university();
+                    echo '<select class="form-control" name="user-school" id="user-school">';
+                      echo '<option value='.Null.'>None</option>';
+                      foreach ($schools as $school_id) {
+                        if ($user->get_university_id() == $school_id) {
+                          $university = University::get_university_by_id($school_id);
+                          echo '<option value='.$chool_id.' selected="selected">'.$university->get_name().'</p>';
+                        }
+                        else {
+                          $university = University::get_university_by_id($school_id);
+                          echo '<option value='.$school_id.'>'.$university->get_name().'</p>';
+                        }
+                      }
+                    echo '</select>';
                   ?>
                 </div>
                 <?php
-                  // TODO
+                  if (isset($invalid_school)) {
+                    echo '<p class="error-message">Invalid school.</p>';
+                  }
+                  if (isset($school_changed)) {
+                    echo '<p class="success-message">School changed successfully!</p>';
+                  }
                 ?>
                 <div class="form-group">
                   <label for="binder-description"><h4>Biography</h4></label>
