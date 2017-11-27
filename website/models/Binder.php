@@ -100,7 +100,7 @@ class Binder {
             }
         }
 
-        return $return_value
+        return $return_value;
     }
 
 

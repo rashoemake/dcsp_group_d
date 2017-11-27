@@ -13,10 +13,10 @@ class Match {
 		require("connect.php");
         
         // Query for the ID
-        if (!($stmt = $conn->prepare("INSERT INTO `matches` (user1_id, user2_ud) VALUES (?, ?)"))) {
+        if (!($stmt = $conn->prepare("INSERT INTO `matches` (user1_id, user2_id) VALUES (?, ?)"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-        $stmt->bind_param("sss", $new_user->get_email_address(), $new_user->get_name());
+        $stmt->bind_param("ii", $user1_id, $user2_id);
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');

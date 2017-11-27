@@ -10,12 +10,13 @@
     }
 
     if (isset($_POST["decision"])) {
-        if ($_POST["decision"] != Null) {
-            Match::create_match($_SESSION["id"], $_POST["decision"]);
-            
+        if ($_POST["decision"] == "Yes") {
+            Match::create_match($_SESSION["id"], $_POST["match_id"]);
+            $match_made = true;
         }
         else {
-
+            $match_made = false;
+            $_POST["match_id"] = Null;
         }
     }
 ?>
@@ -55,21 +56,40 @@
                     <div class="panel panel-default">
                         <div class="panel-body panel-content-color">
                             <?php
-                                $match = Match::suggest_user($_SESSION["id"]);
-                                if ($match != Null) {
+                                if (!(isset($match_made)) || ($match_made == false)) {
+                                    $match = Match::suggest_user($_SESSION["id"]);
+                                    if ($match != Null) {
+                                        $school = University::get_university_by_id($match->get_university_id());
+                                        echo '<h1 class="text-center">'.$match->get_name().'</h1><br>';
+                                        echo '<h3 class="text-center">School: '.$school->get_name().'<h3></li>';
+                                        echo '<h3 class="text-center">Bio: '.$match->get_biography().'</h3></li><br>';
+                                    }
+                                    else {
+                                        echo '<h1 class="text-center big-ol-frown">:(</h1><br>';
+                                        echo '<h2 class="text-center">No matches found... Try again later.</h2>';
+                                    }
+                                }
+                                else {
+                                    $match = User::get_user_by_id($_POST["match_id"]);
                                     $school = University::get_university_by_id($match->get_university_id());
                                     echo '<h1 class="text-center">'.$match->get_name().'</h1><br>';
                                     echo '<h3 class="text-center">School: '.$school->get_name().'<h3></li>';
                                     echo '<h3 class="text-center">Bio: '.$match->get_biography().'</h3></li><br>';
                                 }
-                                else {
-                                    echo '<h1 class="text-center big-ol-frown">:(</h1><br>';
-                                    echo '<h2 class="text-center">No matches found... Try again later.</h2>';
-                                }
                             ?>
                             <form method="post" action="matching.php">
-                                <input type="submit" value="<?php $match->get_id() ?>" name="decision" class="btn btn-primary pull-left col-md-3 button-text">
-                                <input type="submit" value="<?php Null ?>" name="decision" class="btn btn-primary pull-right col-md-3 button-text">
+                                <?php
+                                    if (!(isset($match_made)) || ($match_made == false)) {
+                                        echo '<input type="hidden" name="match_id" value="'.$match->get_id().'">';
+                                        echo '<input type="submit" value="Yes" name="decision" class="btn btn-primary pull-left col-md-3 button-text">';
+                                        echo '<input type="submit" value="No" name="decision" class="btn btn-primary pull-right col-md-3 button-text">';
+                                    }
+                                    else {
+                                        echo '<h4 class="text-center">You decided to start a Binder with this user!</h4>';
+                                        echo '<input type="submit" value="Continue" name="decision" class="btn btn-primary pull-left col-md-3 button-text">';
+                                        echo '<a href="bindr-index.php" value="Home" class="btn btn-primary pull-right col-md-3 button-text">Home</a>';
+                                    }
+                                ?>
                             </form>
                         </div>
                     </div>
