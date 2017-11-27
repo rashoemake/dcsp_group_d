@@ -13,7 +13,7 @@ class Message {
         $tmp = new Message($body, $user_id, $binder_id);
                 
         //create DB connection
-        require_once 'connect.php';
+        require 'connect.php';
         
         if (!($stmt = $conn->prepare("INSERT INTO `messages`(body, user_id, binder_id) VALUES(?,?,?)"))) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -30,7 +30,7 @@ class Message {
 
     public static function get_message_by_id($message_id) {
         //create DB connection
-        require_once 'connect.php';
+        require 'connect.php';
         
         if(!($stmt = $conn->prepare("SELECT * FROM `messages` WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -53,7 +53,7 @@ class Message {
     
     public static function get_message_by_binder_id($binder_id) {
         //create DB connection
-        require_once 'connect.php';
+        require 'connect.php';
         
         if(!($stmt = $conn->prepare("SELECT * FROM `messages` WHERE binder_id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -111,7 +111,7 @@ class Message {
 
     private function set_body($body) {
         if (strlen($body) < 1) {
-            throw new Message_body_exception();
+            throw new ValidationException("Biography must be greater than 1 character", "Biography");
         } else {
             $this->body = $body;
         }        
@@ -122,7 +122,7 @@ class Message {
     }
 
     private function set_hidden($hidden) {
-        if (preg_match("/^0|1|true|false|TRUE|FALSE$/", $hidden)) {
+        if (preg_match("/^0|1$/", $hidden)) {
             $this->hidden = $hidden;
         } else {
             die("hidden is not of a valid boolean value");
@@ -175,15 +175,15 @@ class Message {
         //validate hidden
         $this->set_hidden($hidden);
         
-        /*
+   
         //create DB connection
-        require_once 'connect.php';
+        require 'connect.php';
         
         if (!($stmt = $conn->prepare("UPDATE ? SET hidden=? WHERE id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
-        if (!($stmt->bind_param('ssi', self::$tablename, $hidden, $this->id))) {
+        if (!($stmt->bind_param('ssi', self::$tablename, $hidden, $this->get_id()))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
         
@@ -191,16 +191,8 @@ class Message {
             header('HTTP/1.1 500 Internal Server Error');
         }
         $stmt->close(); $conn->close();
-         * 
-         */
+
     }
 }
 
-//custom exception for body validation errors
-class Message_body_exception extends Exception {
-    public function errorMessage() {
-        $msg = "Message body must have at least one character";
-        return $msg;
-    }
-}
 ?>

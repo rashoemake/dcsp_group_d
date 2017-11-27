@@ -1,9 +1,13 @@
 <?php
     session_start();
-    
-    if(isset($_SESSION)) {
+
+    if (isset($_SESSION["logged_in"])) {
         require_once 'models/User.php';
         $this_user = User::get_user_by_id($_SESSION['id']);
+        if ($_SESSION["type"] == "admin") {
+            header('Location: admin-profile.php');
+            exit();
+        }
         $user_name = $this_user->get_name();
         $user_email = $this_user->get_email_address();
         $user_school = $this_user->get_university();
@@ -11,6 +15,7 @@
         $user_binders = $this_user->get_binders();
     } else {
         header('Location: index.php');
+        exit();
     }
 
 ?>
@@ -55,10 +60,10 @@
         <h4 class="text-left">Binders:</h4>
         <ul class="list-unstyled">
         <?php   
-        require_once 'Binder.php';
+        require_once 'models/Binder.php';
             foreach($user_binders as $binder) {
-                $tmp=Binder::get_binder_by_id($id);
-                echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">Binder1</a>'.$tmp->get_name().'</li>';
+                $tmp=Binder::get_binder_by_id($binder);
+                echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">'.$tmp->get_name().'</a></li>';
             }
         ?>
         </ul>

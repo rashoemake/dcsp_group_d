@@ -4,7 +4,7 @@
 
 	if (isset($_SESSION["logged_in"])) {
         if ($_SESSION["logged_in"] == true) {
-            header("Location: home.php");
+            header("Location: bindr-index.php");
             exit();
         }
     }
@@ -15,10 +15,16 @@
 				$user = User::get_user_by_email($_POST["email"]);
 				if ($user != Null) {
 					if (password_verify($_POST["password"], $user->get_password_hash())) {
-						$_SESSION["logged_in"] = true;
-						$_SESSION["id"] = $user->get_id();
-						header("Location: home.php");
-						exit();
+						if ($user->get_disabled() == true) {
+							$disabled = true;
+						}
+						else {
+							$_SESSION["logged_in"] = true;
+							$_SESSION["id"] = $user->get_id();
+							$_SESSION["type"] = $user->get_type();
+							header("Location: bindr-index.php");
+							exit();
+						}
 					}
 					else {
 						$invalid = true;
@@ -127,6 +133,9 @@
 												}
 												if (isset($invalid)) {
 													echo '<p class="error-message">Invalid username or password.</p>';
+												}
+												if (isset($disabled)) {
+													echo '<p class="error-message">This account has been disabled.</p>';
 												}
 											?>
 											<br>

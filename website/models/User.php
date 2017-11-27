@@ -1,6 +1,6 @@
 <?php
 
-require(dirname(__DIR__)."/exception/validationexception.php");
+require_once(dirname(__DIR__)."/exception/validationexception.php");
 
 class User {
     /* STATIC MEMBERS */
@@ -50,6 +50,7 @@ class User {
         $new_user = new User();
         $new_user->set_email_address($email);
         $new_user->set_name($name);
+        $new_user->set_type("user");
 
         $new_user->set_password_hash(password_hash($password, PASSWORD_BCRYPT));
 
@@ -83,6 +84,7 @@ class User {
     private $disabled;
     private $modifiedDate;
     private $university_id;
+    private $type;
 
     // Getters and Setters (Validation)
     // TODO: VALIDATION
@@ -182,6 +184,19 @@ class User {
         $this->modifiedDate = $modifiedDate;
     }
 
+    public function get_type() {
+        return $this->type;
+    }
+
+    private function set_type($type) {
+        if (($type == "user") || ($type == "admin")) {
+            $this->type = $type;
+        }
+        else {
+            throw new ValidationException("INVALID", "type");
+        }
+    }
+
 
     // Instance Methods
     public function from_assoc($assoc) {
@@ -258,7 +273,27 @@ class User {
     }
 
     public function get_binders() {
-        // TODO
+        require 'connect.php';
+        
+        if (!($stmt = $conn->prepare("SELECT binder_id FROM `user_binders` WHERE user_id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('i', $this->get_id());
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $binder_list = array();
+        $result_obj = $stmt->get_result();
+        
+        //extract binder IDs
+        for ($i = 0; $i < $result_obj->num_rows; $i++) {
+            $result_obj->data_seek($i);
+            $results = $result_obj->fetch_assoc();
+            $binder_list[$i] = $results['binder_id'];
+        }
+        
+        return $binder_list;
     }
 
     public function get_matches() {
@@ -383,6 +418,24 @@ class User {
 
         // Runs validation
         $this->set_university_id($university_id);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+    }
+
+    public function update_type($user_type) {
+        // Get the mysql connection
+        require("connect.php");
+
+        if (!($stmt = $conn->prepare("UPDATE `users` SET `type`=? WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $id = $this->get_id();
+        $stmt->bind_param("si", $user_type, $id);
+
+        //Runs validation
+        $this->set_type($user_type);
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
