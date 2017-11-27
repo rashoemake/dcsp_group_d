@@ -1,5 +1,8 @@
 
 <?php
+
+require_once(dirname(__DIR__)."/exception/validationexception.php");
+
 class University {
 	/* STATIC MEMBERS */
 	
