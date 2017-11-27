@@ -82,9 +82,9 @@ class User {
     private $num_ratings;
     private $biography;
     private $disabled;
+    private $type;
     private $modifiedDate;
     private $university_id;
-    private $type;
 
     // Getters and Setters (Validation)
     // TODO: VALIDATION
@@ -230,6 +230,10 @@ class User {
 
         if (isset($assoc["disabled"])) {
             $this->set_disabled($assoc["disabled"]);
+        }
+
+        if (isset($assoc["type"])) {
+            $this->set_type($assoc["type"]);
         }
 
         if (isset($assoc["modifiedDate"])) {

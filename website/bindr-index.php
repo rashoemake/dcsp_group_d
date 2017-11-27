@@ -8,8 +8,13 @@
         exit();
     }
 
-    $user = User::get_user_by_id($_SESSION["id"]);
-    $user_binders = $user->get_binders();
+    if ($_SESSION["type"] != "admin") {
+        $user = User::get_user_by_id($_SESSION["id"]);
+        $user_binders = $user->get_binders();
+    }
+    else {
+        $user_binders = Binder::get_all_binder_id();
+    }
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -52,7 +57,12 @@
                             }
                         }
                         else {
-                            echo '<h1 class="text-center big-text">*tumbleweed*</h1><br><h2 class="text-center">You\'re not in any Binders yet!</h2><h3 class="text-center">Start matching to find some!</h3>';
+                            if ($_SESSION["type"] != "admin") {
+                                echo '<h1 class="text-center big-text">*tumbleweed*</h1><br><h2 class="text-center">You\'re not in any Binders yet!</h2><h3 class="text-center">Start matching to make some!</h3>';
+                            }
+                            else {
+                                echo '<h1 class="text-center big-text">*tumbleweed*</h1><br><h2 class="test-center">There aren\'t any Binders yet!</h2>';
+                            }
                         }
                     ?>
                 </div>

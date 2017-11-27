@@ -1,5 +1,12 @@
 <?php
-    session_start();
+	session_start();
+	require_once "models/User.php";
+	
+	$user = User::get_user_by_id($_SESSION["id"]);
+	if ($user->get_type() != "admin") {
+		header("Location: profile.php");
+		exit();
+	}
 ?>
 <!DOCTYPE html>
 <html lang='en'>

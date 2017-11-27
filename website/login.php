@@ -94,7 +94,6 @@
 					<ul class="nav navbar-nav">
 						<li class="navbar-padding"><a href="index.php"><span class="glyphicon glyphicon-home glyph-padding"></span>Home</a></li>
 						<li class="navbar-padding"><a href="about.php">About</a></li>
-						<li class="navbar-padding"><a href="contact.php">Contact</a></li>
 					</ul>
 					<ul class="nav navbar-nav pull-right">
 						<li style="padding-right: 15px;"><a href="sign-up.php"><span class="glyphicon glyphicon-user glyph-padding"></span> Sign Up </a></li>

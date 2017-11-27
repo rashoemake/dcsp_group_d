@@ -29,6 +29,30 @@ class Binder {
         return $return_value;
     }
 
+    public static function get_all_binder_id() {
+        //Create SQL connection
+        require 'connect.php';
+
+        //Query for the id
+        if (!($stmt = $conn->prepare("SELECT * FROM `binder`"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        $return_value = array();
+        $row = $stmt->get_result();
+        
+        for ($i = 0; $i < $row->num_rows; $i++) {
+            $row->data_seek($i);
+            $results = $row->fetch_assoc();
+            $return_value[$i] = $results['id'];
+        }
+        return $return_value;
+    }
+
     public static function create_binder($name) {
         $new_binder = new Binder();
         $new_binder->set_name($name);

@@ -34,7 +34,7 @@
                             <h3 class="text-center">Your account was successfully created!</h3>
                             <br>
                             <p class="text-center">You'll be redirected to a page you can add more information about yourself in 5 seconds.</p>
-                            <a href=profile.php><p class="text-center">If you aren't, click here.</p></a>
+                            <a href=edit-profile.php><p class="text-center">If you aren't, click here.</p></a>
                             <br>
                         </div>
                     </div>

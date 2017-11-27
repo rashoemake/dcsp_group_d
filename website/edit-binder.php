@@ -2,9 +2,9 @@
     $name=$name_err=$description=$description_err="";
     session_start();
     
-//  if (!(isset($_SESSION["logged_in"]))) {
-//    header("Location: index.php");
-//  }
+    if (!(isset($_SESSION["logged_in"]))) {
+      header("Location: index.php");
+    }
     
     if (isset($_GET['binder_id'])) {
       require 'models/Binder.php';
