@@ -45,44 +45,6 @@ class University {
 		$return_value->from_assoc($row);
         return $return_value;
 	}
-	
-	public static function get_university_by_name($name) {
-		//TODO
-		require("connect.php");
-		
-		// Query for the City
-		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE `name`=?"))) {
-			header('HTTP/1.1 500 Internal Server Error');	
-		}
-		$stmt->bind_param("s", $name);
-
-		if (!($stmt->execute())) {
-			header('HTTP/1.1 500 Internal Server Error');
-		}
-
-		$row = $stmt->get_result()->fetch_assoc();
-		$return_value = University::from_assoc($row);
-		return $return_value;
-    }
-    
-    public static function get_university_by_state($state) {
-		//TODO
-		require("connect.php");
-		
-		// Query for the City
-		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE `state`=?"))) {
-			header('HTTP/1.1 500 Internal Server Error');	
-		}
-		$stmt->bind_param("s", $state);
-
-		if (!($stmt->execute())) {
-			header('HTTP/1.1 500 Internal Server Error');
-		}
-	
-		$row = $stmt->get_result()->fetch_assoc();
-		$return_value = University::from_assoc($row);
-		return $return_value;
-	}
 
 	public static function get_all_university() {
 		require("connect.php");
