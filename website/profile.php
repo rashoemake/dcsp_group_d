@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require_once "models/University.php";
 
     if (isset($_SESSION["logged_in"])) {
         require_once 'models/User.php';
@@ -10,7 +11,8 @@
         }
         $user_name = $this_user->get_name();
         $user_email = $this_user->get_email_address();
-        $user_school = $this_user->get_university();
+        $user_school_id = $this_user->get_university_id();
+        $user_school = University::get_university_by_id($user_school_id);
         $user_bio = $this_user->get_biography();
         $user_binders = $this_user->get_binders();
     } else {
@@ -50,7 +52,7 @@
         
         <!-- school information -->
         <h4 class="text-left">School:</h4>
-        <p><?php echo $user_school ?></p>
+        <p><?php echo $user_school->get_name() ?></p>
         
         <!-- bio -->
         <h4 class="text-left">Biography:</h4>

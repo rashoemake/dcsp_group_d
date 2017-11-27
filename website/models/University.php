@@ -11,12 +11,30 @@ class University {
 	
 	// Static Methods
 
+	public static function get_university_by_id($id) {
+		require("connect.php");
+
+		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+		$stmt->bind_param("i", $id);
+
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
+		$row = $stmt->get_result()->fetch_assoc();
+		$return_value = new University();
+		$return_value->from_assoc($row);
+		return $return_value;
+	}
+
 	public static function get_university_by_city($city) {
 		//TODO
 		require("connect.php");
 
         // Query for the City
-        if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
+        if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE city=?"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("s", $city);
@@ -26,7 +44,8 @@ class University {
         }
 
         $row = $stmt->get_result()->fetch_assoc();
-        $return_value = University::from_assoc($row);
+		$return_value = new Univserity();
+		$return_value->from_assoc($row);
         return $return_value;
 	}
 	
@@ -35,7 +54,7 @@ class University {
 		require("connect.php");
 		
 		// Query for the City
-		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
+		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE `name`=?"))) {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$stmt->bind_param("s", $name);
@@ -54,7 +73,7 @@ class University {
 		require("connect.php");
 		
 		// Query for the City
-		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE id=?"))) {
+		if (!($stmt = $conn->prepare("SELECT * FROM `universities` WHERE `state`=?"))) {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$stmt->bind_param("s", $state);
@@ -65,6 +84,28 @@ class University {
 	
 		$row = $stmt->get_result()->fetch_assoc();
 		$return_value = University::from_assoc($row);
+		return $return_value;
+	}
+
+	public static function get_all_university() {
+		require("connect.php");
+
+		if (!($stmt = $conn->prepare("SELECT * FROM `universities`"))) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+		
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
+		$return_value = array();
+		$row = $stmt->get_result();
+
+		for ($i = 0; $i < $row->num_rows; $i++) {
+			$row->data_seek($i);
+			$results = $row->fetch_assoc();
+			$return_value[$i] = $results["id"];
+		}
 		return $return_value;
 	}
 	
@@ -98,11 +139,6 @@ class University {
 	private $city;
 	private $state;
 	private $modifiedDate;
-	
-	// Constructor
-	public function __construct($name, $city, $state) {
-		//calls setter methods for validation
-	}
 	
 	// Getters and Setters
 	// TODO Validation: 
@@ -140,6 +176,10 @@ class University {
 	
 	public function get_modifiedDate() {
 		return($this->modifiedDate);
+	}
+
+	public function set_modifiedDate($modifiedDate) {
+		$this->modifiedDate = $modifiedDate;
 	}
 	
 	// Instance Methods
@@ -218,7 +258,7 @@ class University {
         }
 
         if (isset($assoc["modifiedDate"])) {
-            $this->set_modified_date($assoc["modifiedDate"]);
+            $this->set_modifiedDate($assoc["modifiedDate"]);
 		}
 	}
 
