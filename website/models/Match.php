@@ -25,14 +25,14 @@ class Match {
         return $conn->insert_id;
     }
 
-    public static function suggest_user($user_id) {
+    public static function get_unanswered_match($user_id) {
         // Return any Users that have already matched $user_id
         // Get the mysql connection
         require("connect.php");
         require("User.php");
         
         // Query for the ID
-        if (!($stmt = $conn->prepare("SELECT users.* FROM matches INNER JOIN users ON matches.user1_id = users.id WHERE matches.user2_id=? AND matches.user1_approve=1 AND matches.user2_approve IS NULL LIMIT 1"))) {
+        if (!($stmt = $conn->prepare("SELECT matches.* FROM matches INNER JOIN users ON matches.user1_id = users.id WHERE matches.user2_id=? AND matches.user1_approve=1 AND matches.user2_approve IS NULL LIMIT 1"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $stmt->bind_param("i", $user_id);
@@ -43,10 +43,15 @@ class Match {
 
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
-            $return_value = new User();
+            $return_value = new Match();
             $return_value->from_assoc($result->fetch_assoc());
             return $return_value;
         }
+    }
+
+    public static function suggest_user($user_id) {
+        require("connect.php");
+        require("User.php");
 
         // Returns a random user from the same University as $user_id
         if (!($stmt = $conn->prepare("SELECT * FROM `users` WHERE university_id IN (SELECT university_id FROM `users` WHERE id=?) AND id != ? LIMIT 1"))) {
