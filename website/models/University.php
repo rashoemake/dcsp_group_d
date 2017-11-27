@@ -110,24 +110,27 @@ class University {
 	}
 	
   	public static function create_university($name, $city, $state) {
-		//TODO
-		//create object
-		$new_university = new $University;
-		$new_university->set_name($name);
-		$new_university->set_city($city);
-		$new_university->set_state($state);
-		
-		//get sql connection
-		require("connect.php");
 
-		//Query for creating new row in university table
-		$stmt->bind_param("sss", $new_university->get_name(), $new_university->get_city(), $new_university->get_state());
+            $new_university = new University();
+            $new_university->set_name($name);
+            $new_university->set_city($city);
+            $new_university->set_state($state);
 
-        if (!($stmt->execute())) {
-            header('HTTP/1.1 500 Internal Server Error');
-        }
+            //get sql connection
+            require("connect.php");
 
-        return $conn->insert_id; 
+            if (!($stmt = $conn->prepare("INSERT INTO `universities`(name,city,state) VALUES(?,?,?)"))) {
+                header('HTTP/1.1 500 Internal Server Error');
+            }
+
+            //Query for creating new row in university table
+            $stmt->bind_param("sss", $new_university->get_name(), $new_university->get_city(), $new_university->get_state());
+
+            if (!($stmt->execute())) {
+                header('HTTP/1.1 500 Internal Server Error');
+            }
+
+            return $conn->insert_id; 
 	}
 	
 	
@@ -155,7 +158,11 @@ class University {
 	}
 	
 	private function set_name($name) {
-		$this->name = $name;
+		if (strlen($name) > 1 && preg_match("/^([a-zA-Z ]+)$/", $name)) {
+                    $this->name = $name;
+                } else {
+                    throw new ValidationException("Invalid name", "name");
+                }
 	}
 	
 	public function get_city() {
@@ -163,7 +170,11 @@ class University {
 	}
 	
 	private function set_city($city) {
-		$this->city = $city;
+		if (strlen($city) > 1 && preg_match("/^([a-zA-Z ]+)$/", $city)) {
+                    $this->city = $city;
+                } else {
+                    throw new ValidationException("Invalid city", "city");
+                }
 	}
 	
 	public function get_state() {
@@ -171,7 +182,11 @@ class University {
 	}
 	
 	private function set_state($state) {
-		$this->state = $state;
+		if (strlen($state) > 1 && preg_match("/^([a-zA-Z ]+)$/", $state)) {
+                    $this->state = $state;
+                } else {
+                    throw new ValidationException("Invalid state", "state");
+                }
 	}
 	
 	public function get_modifiedDate() {
@@ -241,25 +256,25 @@ class University {
 	}
 	
 	public function from_assoc($assoc) {
-        if (isset($assoc["id"])) {
-            $this->set_id($assoc["id"]);
-        }
+            if (isset($assoc["id"])) {
+                $this->set_id($assoc["id"]);
+            }
 
-        if (isset($assoc["name"])) {
-            $this->set_name($assoc["name"]);
-        }
+            if (isset($assoc["name"])) {
+                $this->set_name($assoc["name"]);
+            }
 
-        if (isset($assoc["city"])) {
-            $this->set_city($assoc["city"]);
-        }
+            if (isset($assoc["city"])) {
+                $this->set_city($assoc["city"]);
+            }
 
-        if (isset($assoc["state"])) {
-            $this->set_state($assoc["state"]);
-        }
+            if (isset($assoc["state"])) {
+                $this->set_state($assoc["state"]);
+            }
 
-        if (isset($assoc["modifiedDate"])) {
-            $this->set_modifiedDate($assoc["modifiedDate"]);
-		}
+            if (isset($assoc["modifiedDate"])) {
+                $this->set_modifiedDate($assoc["modifiedDate"]);
+            }
 	}
 
 }

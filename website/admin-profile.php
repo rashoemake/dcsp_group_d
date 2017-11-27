@@ -1,8 +1,10 @@
 <?php
 $school_name=$school_city=$school_state=$school_err="";
+$account_err="";
 	session_start();
 	require_once "models/User.php";
         require_once 'models/University.php';
+        require_once 'models/Binder.php';
 	
 //	$user = User::get_user_by_id($_SESSION["id"]);
 //	if ($user->get_type() != "admin") {
@@ -17,15 +19,37 @@ $school_name=$school_city=$school_state=$school_err="";
             
             try {
                 $university = University::create_university($school_name, $school_city, $school_state);
+                $school_name=$school_city=$school_state="";
             } catch (ValidationException $ex) {
                 $school_err = $ex->get_msg();
             }
-        } else {
+            
+        } else if (isset($_POST['school-name']) || isset($_POST['school-city']) || isset($_POST['school-state'])) {
             if (isset($_POST['school-name'])) { $school_name = $_POST['school-name']; }
             if (isset($_POST['school-city'])) { $school_name = $_POST['school-city']; }
             if (isset($_POST['school-state'])) { $school_name = $_POST['school-state']; }
             $school_err = "All fields required";
         }
+        
+        if (isset($_POST['account_action']) && isset($_POST['user_id'])) {
+            $user = User::get_user_by_id($_POST['user_id']);
+            if ($_POST['account_action']=='disable') {
+                $user->update_disabled(1);
+            } else {
+                $user->update_disabled(0);
+            }                  
+        }
+        
+        if (isset($_POST['binder_action']) && isset($_POST['binder_id'])) {
+            $binder = Binder::get_binder_by_id($_POST['binder_id']);
+            if ($_POST['binder_action']=='disable') {
+                $binder->update_disabled(1);
+            } else {
+                $binder->update_disabled(0);
+            }                  
+        }
+        
+        
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -65,16 +89,37 @@ $school_name=$school_city=$school_state=$school_err="";
             
             <h4 class="field-label">Name</h4>
             <input type="text" name="school-name" id="school-name" class="info-input" value="<?php echo $school_name ?>">
-            
+            <br>
             <h4 class="field-label">City</h4>
             <input type="text" name="school-city" id="school-city" class="info-input" value="<?php echo $school_city ?>">
-
+            <br>
             <h4 class="field-label">State</h4>
             <input type="text" name="school-state" id="school-state" class="info-input" value="<?php echo $school_state ?>">
-            <span class="error"><?php echo $school_err ?></span><br>
-           
+            <br>            
             <input type="submit" value="Submit">
-            <input type="reset" value="Reset">
+            <input type="reset" value="Reset"><span class="error-message"><?php echo $school_err ?></span>
+        </form>
+        
+        <h3>Enable/Disable Account</h3>
+        <form method="post" action="admin-profile.php">
+            <h4 class="field-label">User ID</h4>
+            <input type="text" name="user_id" id="user_id" class="info-input"><span class="error-message"><?php echo $account_err ?></span>
+            <br>
+            Disable&nbsp;<input type="radio" name="account_action" value="disable" checked="checked">&nbsp;
+            Enable&nbsp;<input type="radio" name="account_action" value="enable">
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+        
+        <h3>Enable/Disable Binder</h3>
+        <form method="post" action="admin-profile.php">
+            <h4 class="field-label">Binder ID</h4>
+            <input type="text" name="binder_id" id="binder_id" class="info-input"><span class="error-message"><?php echo $account_err ?></span>
+            <br>
+            Disable&nbsp;<input type="radio" name="binder_action" value="disable" checked="checked">&nbsp;
+            Enable&nbsp;<input type="radio" name="binder_action" value="enable">
+            <br>
+            <input type="submit" value="Submit">
         </form>
 
     </body>
