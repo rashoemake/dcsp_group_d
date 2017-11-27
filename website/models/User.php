@@ -340,7 +340,7 @@ class User {
             header('HTTP/1.1 500 Internal Server Error');	
         }
         $id = $this->get_id();
-        $stmt->bind_param("bi", $disabled, $id);
+        $stmt->bind_param("ii", $disabled, $id);
 
         // Runs validation
         $this->set_disabled($disabled);

@@ -48,7 +48,7 @@ function createmessagestable($connection){
     REFERENCES binder(id)
     ON UPDATE CASCADE 
     ON DELETE RESTRICT,
-    createdDate  TIMESTAMP CURRENT_TIMESTAMP,
+    createdDate  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY   (id)
     
   )";
