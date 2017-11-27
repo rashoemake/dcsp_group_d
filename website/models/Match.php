@@ -13,10 +13,10 @@ class Match {
 		require("connect.php");
         
         // Query for the ID
-        if (!($stmt = $conn->prepare("INSERT INTO `matches` (user1_id, user2_ud) VALUES (?, ?)"))) {
+        if (!($stmt = $conn->prepare("INSERT INTO `matches` (user1_id, user2_id) VALUES (?, ?)"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-        $stmt->bind_param("sss", $new_user->get_email_address(), $new_user->get_name());
+        $stmt->bind_param("ii", $user1_id, $user2_id);
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -29,7 +29,7 @@ class Match {
         // Return any Users that have already matched $user_id
         // Get the mysql connection
         require("connect.php");
-        require("User.php");
+        require_once("User.php");
         
         // Query for the ID
         if (!($stmt = $conn->prepare("SELECT users.* FROM matches INNER JOIN users ON matches.user1_id = users.id WHERE matches.user2_id=? AND matches.user1_approve=1 AND matches.user2_approve IS NULL LIMIT 1"))) {

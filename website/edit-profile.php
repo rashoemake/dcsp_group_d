@@ -40,6 +40,15 @@
         $invalid_school = true;
       }
     }
+    elseif (($_POST["user-school"] != $user->get_university_id()) && ($_POST["user-school"] == Null)) {
+      try {
+        $user->update_university_id(Null);
+        $school_changed = true;
+      }
+      catch (Exception $s_except) {
+        $invalid_school = true;
+      }
+    }
     // Update Bio
     if ($_POST["user-bio"] != $user->get_biography()) {
       try {
@@ -132,7 +141,7 @@ errors
                       foreach ($schools as $school_id) {
                         if ($user->get_university_id() == $school_id) {
                           $university = University::get_university_by_id($school_id);
-                          echo '<option value='.$chool_id.' selected="selected">'.$university->get_name().'</p>';
+                          echo '<option value='.$school_id.' selected>'.$university->get_name().'</p>';
                         }
                         else {
                           $university = University::get_university_by_id($school_id);
