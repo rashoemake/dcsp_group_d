@@ -31,7 +31,7 @@ class Match {
 
         // Get the mysql connection
         require("connect.php");
-        require("User.php");
+        require_once("User.php");
         
         // Query for the ID
         if (!($stmt = $conn->prepare("SELECT users.* FROM matches INNER JOIN users ON matches.user1_id = users.id WHERE matches.user2_id=? AND matches.user1_approve=1 AND matches.user2_approve IS NULL LIMIT 1"))) {
