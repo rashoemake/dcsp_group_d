@@ -10,33 +10,41 @@
         exit();
     }
 
-    if (isset($_POST["decision"])) {
+    if ((isset($_POST["decision"])) && (isset($_POST["match_id"]))) {
         if ($_POST["decision"] == "Yes") {
-            $match_made = true;
             $pre_existing = Match::get_unanswered_match($_SESSION["id"]);
-            if ($pre_existing != Null) {
+            if ($pre_existing == Null) {
+                $match_id = Match::create_match($_SESSION["id"], $_POST["match_id"]);
+                $match = Match::get_match_by_id($match_id);
+                $match->update_user1_approved(true);
+                $match_made = true;
+            }
+            else {
                 if ($pre_existing->get_user1_id() == $_POST["match_id"]) {
-                    $new_binder = Binder::create_binder("".$_POST["match_id"]." ; ".$_SESSION["id"]."");
-                    $new_binder->add_user(User::get_user_by_id($_SESSION["id"]));
-                    $new_binder->add_user(User::get_user_by_id($_POST["match_id"]));
-                    header("Location: edit-binder.php");
-                    exit();
+                    $pre_existing->update_user2_approved(true);
+                    $user1 = User::get_user_by_id($_POST["match_id"]);
+                    $user2 = User::get_user_by_id($_SESSION["id"]);
+                    $binder_id = Binder::create_binder("New Binder");
+                    $binder = Binder::get_binder_by_id($binder_id);
+                    $binder->update_disabled(0);
+                    $binder->add_user($_POST["match_id"]);
+                    $binder->add_user($_SESSION["id"]);
+                    $binder_created = true;
                 }
                 else {
                     $match_id = Match::create_match($_SESSION["id"], $_POST["match_id"]);
                     $match = Match::get_match_by_id($match_id);
                     $match->update_user1_approved(true);
+                    $match_made = true;
                 }
-            }
-            else {
-                $match_id = Match::create_match($_SESSION["id"], $_POST["match_id"]);
-                $match = Match::get_match_by_id($match_id);
-                $match->update_user1_approved(true);
             }
         }
         else {
-            $match_made = false;
-            $_POST["match_id"] = Null;
+            $match_id = Match::create_match($_SESSION["id"], $_POST["match_id"]);
+            $match = Match::get_match_by_id($match_id);
+            $match->update_user1_approved(false);
+            header("Location: matching.php");
+            exit();
         }
     }
 ?>
@@ -76,43 +84,66 @@
                     <div class="panel panel-default">
                         <div class="panel-body panel-content-color">
                             <?php
-                                if (!(isset($match_made)) || ($match_made == false)) {
-                                    $match = Match::suggest_user($_SESSION["id"]);
-                                    if ($match != Null) {
-                                        $school = University::get_university_by_id($match->get_university_id());
-                                        echo '<h1 class="text-center">'.$match->get_name().'</h1><br>';
-                                        echo '<h3 class="text-center">School: '.$school->get_name().'<h3></li>';
-                                        echo '<h3 class="text-center">Bio: '.$match->get_biography().'</h3></li><br>';
+                                if (!(isset($binder_created))) {
+                                    if (!(isset($match_made))) {
+                                        $unanswered_match = Match::get_unanswered_match($_SESSION["id"]);
+                                        if ($unanswered_match == Null) {
+                                            $sug_match = Match::suggest_user($_SESSION["id"]);
+                                        }
+                                        else {
+                                            $sug_match_id = $unanswered_match->get_user1_id();
+                                            $sug_match = User::get_user_by_id("$sug_match_id");
+                                        }
+                                        if ($sug_match != Null) {
+                                            $school = University::get_university_by_id($sug_match->get_university_id());
+                                            echo '<h1 class="text-center">'.$sug_match->get_name().'</h1><br>';
+                                            echo '<h3 class="text-center">School: '.$school->get_name().'<h3></li>';
+                                            echo '<h3 class="text-center">Bio: '.$sug_match->get_biography().'</h3></li><br>';
+                                        }
+                                        else {
+                                            echo '<h1 class="text-center big-ol-frown">:(</h1><br>';
+                                            echo '<h2 class="text-center">No matches found... Try again later.</h2><br>';
+                                        }
                                     }
                                     else {
-                                        echo '<h1 class="text-center big-ol-frown">:(</h1><br>';
-                                        echo '<h2 class="text-center">No matches found... Try again later.</h2><br>';
+                                        $match_user = User::get_user_by_id($_POST["match_id"]);
+                                        $school = University::get_university_by_id($match_user->get_university_id());
+                                        echo '<h1 class="text-center">'.$match_user->get_name().'</h1><br>';
+                                        echo '<h3 class="text-center">School: '.$school->get_name().'<h3></li>';
+                                        echo '<h3 class="text-center">Bio: '.$match_user->get_biography().'</h3></li><br>';
                                     }
-                                }
-                                else {
-                                    $match = User::get_user_by_id($_POST["match_id"]);
-                                    $school = University::get_university_by_id($match->get_university_id());
-                                    echo '<h1 class="text-center">'.$match->get_name().'</h1><br>';
-                                    echo '<h3 class="text-center">School: '.$school->get_name().'<h3></li>';
-                                    echo '<h3 class="text-center">Bio: '.$match->get_biography().'</h3></li><br><br>';
                                 }
                             ?>
                             <form method="post" action="matching.php">
                                 <?php
-                                    if (!($match == Null)) {
-                                        if (!(isset($match_made)) || ($match_made == false)) {
-                                            echo '<input type="hidden" name="match_id" value="'.$match->get_id().'">';
-                                            echo '<input type="submit" value="Yes" name="decision" class="btn btn-primary pull-left col-md-3 button-text">';
-                                            echo '<input type="submit" value="No" name="decision" class="btn btn-primary pull-right col-md-3 button-text">';
-                                        }
-                                        else {
-                                            echo '<h4 class="text-center">You decided to start a Binder with this user!</h4>';
-                                            echo '<input type="submit" value="Continue" name="decision" class="btn btn-primary pull-left col-md-3 button-text">';
-                                            echo '<a href="bindr-index.php" value="Home" class="btn btn-primary pull-right col-md-3 button-text">Home</a>';
+                                    if (isset($sug_match)) {
+                                        if ($sug_match != Null) {
+                                            if (!(isset($match_made)) && !(isset($binder_created))) {
+                                                echo '<input type="hidden" name="match_id" value="'.$sug_match->get_id().'">';
+                                                echo '<input type="submit" value="Yes" name="decision" class="btn btn-primary pull-left col-md-3 button-text">';
+                                                echo '<input type="submit" value="No" name="decision" class="btn btn-primary pull-right col-md-3 button-text">';
+                                            }
+                                            else {
+                                                echo '<h4 class="text-center">You decided to start a Binder with this user!</h4>';
+                                                echo '<a href="matching.php" value="Continue" class="btn btn-primary pull-left col-md-3 button-text">Continue</a>';
+                                                echo '<a href="bindr-index.php" value="Home" class="btn btn-primary pull-right col-md-3 button-text">Home</a>';
+                                            }
                                         }
                                     }
+                                    elseif (isset($match_user)) {
+                                        echo '<h4 class="text-center">You decided to start a Binder with this user!</h4>';
+                                        echo '<a href="matching.php" value="Continue" class="btn btn-primary pull-left col-md-3 button-text">Continue</a>';
+                                        echo '<a href="bindr-index.php" value="Home" class="btn btn-primary pull-right col-md-3 button-text">Home</a>';
+                                    }
                                     else {
-                                        echo '<a href="bindr-index.php" value="Home" class="btn btn-primary col-md-4 col-md-offset-4 button-text">Home</a>';
+                                        if (isset($binder_created)) {
+                                            echo '<h4 class="text-center">'.$user2->get_name().' matched you too!</h4>';
+                                            echo '<h4 class="text-center">Binder '.$binder->get_name().' was created!</h4>';
+                                            echo '<form method="get"><a href="edit-binder.php?binder_id='.$binder->get_id().'" value="Set Info" class="btn btn-primary pull-right col-md-3 button-text">Set Binder Info</a>';
+                                        }
+                                        else {
+                                            echo '<a href="bindr-index.php" value="Home" class="btn btn-primary col-md-4 col-md-offset-4 button-text">Home</a>';
+                                        }
                                     }
                                 ?>
                             </form>
