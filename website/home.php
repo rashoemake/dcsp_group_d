@@ -5,7 +5,7 @@
   if (!(isset($_SESSION["logged_in"]))) {
       header("Location: index.php");
     }
-  
+     
   if (isset($_GET['binder_id'])) {
       require 'models/Binder.php';
       $this_binder = Binder::get_binder_by_id($_GET['binder_id']);
@@ -13,6 +13,12 @@
       if (empty($this_binder)) {
           die('$this_binder is empty: binder must not exist');
       }
+      
+    if (isset($_POST['leave_binder']) && $_POST['leave_binder']=='true') {
+      $this_binder->remove_user($_SESSION['id']);
+      header("Location: bindr-index.php");
+      exit();
+  }
       
    if (isset($_POST['message'])) {
       require_once 'models/Message.php';
@@ -27,6 +33,7 @@
   } else {
       die('$_GET[binder_id] is not set');
   }
+  
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -58,10 +65,17 @@
     </script>
 	</head>
   
-  <body>
+  <body>      
     <div class="container">
     <?php require_once 'php_scripts/navbar.php' ?>     
     <br>
+    
+    <?php
+        if ($this_binder->get_disabled()==true) {
+            echo "<h3>The Binder \"". $this_binder->get_name() ."\" is disabled</h3>";
+            exit();
+        }
+      ?>
      
     <div class="container-fluid">
       <div class="row">
@@ -73,7 +87,7 @@
             <li class="nav-padding"><a class="nav-text" href="#">Propose User to Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="<?php echo "edit-binder.php?binder_id=".$this_binder->get_id() ?>">Edit this Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="#message">Post a message</a></li>
-            <!-- <li class="nav-padding"><a class="nav-text" href="#">Leave this Binder</a></li> -->
+            <li class="nav-padding"><a class="nav-text" href="#" data-toggle="modal" data-target="#leave_modal">Leave this Binder</a></li>
           </ul>
         </div> <!-- end col-sm-2 -->
         
@@ -149,6 +163,28 @@
           </form>
         </div>
       </div> <!-- end message submission panel -->
+      
+      <!-- Leave Binder modal -->
+      <div id="leave_modal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Leave this Binder?</h4>
+                  </div>
+                  <div class="modal-body">
+                      <p>Do you really want to leave <?php echo $this_binder->get_name() ?>?</p>
+                  </div>
+                  <div class="modal-footer">
+                      <form method="post" action="home.php?binder_id=<?php echo $this_binder->get_id() ?>">
+                          <input type="hidden" name="leave_binder" value="true">
+                          <input type="submit" class="btn btn-danger pull-left" value="Leave">
+                      </form>
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
       
     </div> <!-- end page content fluid-container -->
 

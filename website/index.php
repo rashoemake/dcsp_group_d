@@ -31,15 +31,15 @@ like "View profile" or "Start matching"
       <h2 class="text-center subtitle-text">Your New Study Group</h2><br>
       
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-4">
         </div>
-        <div class="col-md-2 text-center">
+        <div class="col-sm-2 text-center">
           <a href="login.php" class="btn btn-primary btn-lg">Login</a>
         </div>
-        <div class="col-md-2 text-center">
+        <div class="col-sm-2 text-center">
           <a href="sign-up.php" class="btn btn-primary btn-lg">Sign Up</a>
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-4">
         </div>
       </div>
       
