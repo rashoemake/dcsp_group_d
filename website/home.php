@@ -153,7 +153,7 @@
                                 .'<a href="profile.php?user_id='.$proposal->get_proposed_id().'">'.match_user_id($proposal->get_proposed_id()).'</a></p>';
                         echo '<p>Reason:<br>'.$proposal->get_reason().'</p>';
                         echo "<a class='btn btn-primary btn-xs' href='voting.php?action=approve&proposed_id=".$proposal->get_proposed_id()."'>Approve!</a>&nbsp;&nbsp;&nbsp;";
-                        echo "<a class='btn btn-danger btn-xs' href='voting.php?action=reject&proposed_id=".$proposal->get_proposed_id()."'>Reject!</a>";
+                        echo "<a class='btn btn-danger btn-xs' href='voting.php?action=reject&proposed_id=".$proposal->get_proposed_id()."'>Reject!</a><br>";
                     }
                 } else {
                     echo "<h4>No pending proposals! Use the button below to start one.</h4>";
