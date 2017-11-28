@@ -173,15 +173,55 @@ class Proposal {
         }
     }
     // Instance Methods
-    public function __construct($proposer_id, $proposed_id) {
-        // TODO
-
-    }
 
     public function get_responses() {
         // TODO
-    }
+        require("connect.php");
+		
+		// Query for the ID
+		if (!($stmt = $conn->prepare("SELECT * FROM `proposalresponses` WHERE proposal_id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');	
+		}
+		$stmt->bind_param("i", $this->id);
 
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+        $return_value = array();
+        $row = $stmt->get_result()->fetch_assoc();
+        for ($i = 0; $i < $row->num_rows; $i++) {
+			$row->data_seek($i);
+			$results = $row->fetch_assoc();
+			$return_value[$i] = $ProposalResponse::from_assoc($row);
+		}
+        
+		return $return_value;
+
+    }
+    public function get_response_ids() {
+        // TODO
+        require("connect.php");
+		
+		// Query for the ID
+		if (!($stmt = $conn->prepare("SELECT * FROM `proposalresponses` WHERE proposal_id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');	
+		}
+		$stmt->bind_param("i", $this->id);
+
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+        $return_value = array();
+        $row = $stmt->get_result()->fetch_assoc();
+        for ($i = 0; $i < $row->num_rows; $i++) {
+			$row->data_seek($i);
+			$results = $row->fetch_assoc();
+			$return_value[$i] = $results['id'];
+		}
+        
+		return $return_value;
+
+    }
     public function from_assoc($assoc) {
         if (isset($assoc["id"])) {
             $this->set_id($assoc["id"]);
