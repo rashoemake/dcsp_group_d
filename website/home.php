@@ -152,8 +152,33 @@
                         echo '<p>'.match_user_id($proposal->get_proposer_id()).' has proposed: &nbsp;&nbsp;&nbsp;'
                                 .'<a href="profile.php?user_id='.$proposal->get_proposed_id().'">'.match_user_id($proposal->get_proposed_id()).'</a></p>';
                         echo '<p>Reason:<br>'.$proposal->get_reason().'</p>';
-                        echo "<a class='btn btn-primary btn-xs' href='voting.php?action=approve&proposed_id=".$proposal->get_proposed_id()."'>Approve!</a>&nbsp;&nbsp;&nbsp;";
-                        echo "<a class='btn btn-danger btn-xs' href='voting.php?action=reject&proposed_id=".$proposal->get_proposed_id()."'>Reject!</a>";
+                        if (!(isset($_GET["already_voted"]))) {
+                            echo "<a class='btn btn-primary btn-xs' href='php_scripts/voting.php?action=approve&proposed_id=".$proposal->get_proposed_id()."&proposal_id=".$proposal->get_id()."&binder_id=".$this_binder->get_id()."'>Approve!</a>&nbsp;&nbsp;&nbsp;";
+                            echo "<a class='btn btn-danger btn-xs' href='php_scripts/voting.php?action=reject&proposed_id=".$proposal->get_proposed_id()."&proposal_id=".$proposal->get_id()."&binder_id=".$this_binder->get_id()."'>Reject!</a>";
+                        }
+                        else {
+                            if ($_GET["already_voted"] == false) {
+                                if ($_GET["user_added"] == true) {
+                                    if ($_GET["final_decision"] == true) {
+                                        echo "<p>Your vote was decisive. Proposal approved!</p>";
+                                    }
+                                    else {
+                                        echo "<p>Vote cast.</p>";
+                                    }
+                                }
+                                if ($_GET["user_added"] == false) {
+                                    if ($_GET["final_decision"] == true) {
+                                        echo "<p>Your vote was decisive. Proposal denied.</p>";
+                                    }
+                                    else {
+                                        echo "<p>Vote cast.</p>";
+                                    }
+                                }
+                            }
+                            else {
+                                echo "<p>You've already voted!</p>";
+                            }
+                        }
                     }
                 } else {
                     echo "<h4>No pending proposals! Use the button below to start one.</h4>";
