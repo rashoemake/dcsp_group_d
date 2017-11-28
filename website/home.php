@@ -13,6 +13,7 @@
       if (empty($this_binder)) {
           die('$this_binder is empty: binder must not exist');
       }
+      $members = $this_binder->get_binder_membership(); //used later in two places
       
     if (isset($_POST['leave_binder']) && $_POST['leave_binder']=='true') {
       $this_binder->remove_user($_SESSION['id']);
@@ -24,7 +25,7 @@
       require_once 'models/Message.php';
       try {
           $message=$_POST['message'];
-          Message::create_message($message, 2, $this_binder->get_id());
+          Message::create_message($message, $_SESSION['id'], $this_binder->get_id());
       } catch (ValidationException $ex) {
           $message_err = $ex->get_msg();
       }
@@ -70,9 +71,15 @@
     <?php require_once 'php_scripts/navbar.php' ?>     
     <br>
     
+    
     <?php
         if ($this_binder->get_disabled()==true) {
             echo "<h3>The Binder \"". $this_binder->get_name() ."\" is disabled</h3>";
+            exit();
+        }
+        
+        if (!(in_array($_SESSION['id'], $members))) {
+            echo "<h3>You are not a member of \"". $this_binder->get_name() ."\"</h3>";
             exit();
         }
       ?>
@@ -83,7 +90,7 @@
       <!-- navigation content -->
         <div class="col-sm-2" style="background-color: #9fffe0;">
           <ul class="list-unstyled">
-            <li><h3><h3 class="text-center" style="border-bottom: 1px solid black;">Navigation</h3></h3></li>
+            <li><h4 class="text-center" style="border-bottom: 1px solid black;">Navigation</h4></li>
             <li class="nav-padding"><a class="nav-text" href="#">Propose User to Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="<?php echo "edit-binder.php?binder_id=".$this_binder->get_id() ?>">Edit this Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="#message">Post a message</a></li>
@@ -111,10 +118,10 @@
               <div class="text-left">
                 <h4>Binder Members:</h4>
                 <ul id="binder-members">
-                    <?php
-                        $members = $this_binder->get_binder_membership();
+                    <?php                        
+                        //echo "<pre>" . print_r($members) . "</pre>";
                         foreach($members as $user_id) {
-                            echo "<li>" . match_user_id($user_id) . "</li>";
+                            echo '<li><a href="profile.php?user_id='.$user_id .'">'. match_user_id($user_id).'</a></li>';
                         }
                     ?>
                 </ul>
