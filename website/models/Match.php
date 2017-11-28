@@ -76,7 +76,7 @@ class Match {
         if (!($stmt = $conn->prepare($query))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-        $stmt->bind_param("iiii", $user_id, $user_id, $user_id, $user_id);
+        $stmt->bind_param("iiiii", $user_id, $user_id, $user_id, $user_id, $user_id);
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
