@@ -33,6 +33,7 @@
   } else {
       die('$_GET[binder_id] is not set');
   }
+  
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -64,10 +65,17 @@
     </script>
 	</head>
   
-  <body>
+  <body>      
     <div class="container">
     <?php require_once 'php_scripts/navbar.php' ?>     
     <br>
+    
+    <?php
+        if ($this_binder->get_disabled()==true) {
+            echo "<h3>The Binder \"". $this_binder->get_name() ."\" is disabled</h3>";
+            exit();
+        }
+      ?>
      
     <div class="container-fluid">
       <div class="row">
