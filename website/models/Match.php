@@ -68,7 +68,8 @@ class Match {
                       
                       SELECT user2_id 
                       FROM `matches` 
-                      WHERE user1_id=? OR user2_id=?) 
+                      WHERE user1_id=? OR user2_id=?)
+                  AND id != ?
                   LIMIT 1";
 
 
@@ -76,7 +77,7 @@ class Match {
         if (!($stmt = $conn->prepare($query))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-        $stmt->bind_param("iiiii", $user_id, $user_id, $user_id, $user_id, $user_id);
+        $stmt->bind_param("iiiiii", $user_id, $user_id, $user_id, $user_id, $user_id, $user_id);
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
