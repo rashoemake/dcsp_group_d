@@ -58,17 +58,20 @@
         <h4 class="text-left">Biography:</h4>
         <p><?php echo $user_bio ?></p>
         
-        <!-- binder associations -->
+        <!-- binder associations
         <h4 class="text-left">Binders:</h4>
         <ul class="list-unstyled">
-        <?php   
+        <?php  /*  
         require_once 'models/Binder.php';
             foreach($user_binders as $binder) {
                 $tmp=Binder::get_binder_by_id($binder);
                 echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">'.$tmp->get_name().'</a></li>';
-            }
+            
+           }
+         */
         ?>
         </ul>
+         -->
         
         <br>        
         <p class="text-left">User ID: <?php echo $_SESSION['id'] ?></p>

@@ -6,11 +6,11 @@ $account_err="";
         require_once 'models/University.php';
         require_once 'models/Binder.php';
 	
-//	$user = User::get_user_by_id($_SESSION["id"]);
-//	if ($user->get_type() != "admin") {
-//		header("Location: profile.php");
-//		exit();
-//	}
+	$user = User::get_user_by_id($_SESSION["id"]);
+	if ($user->get_type() != "admin") {
+		header("Location: profile.php");
+		exit();
+	}
         
         if (isset($_POST['school-name']) && isset($_POST['school-city']) && isset($_POST['school-state'])) {
             $school_name = $_POST['school-name'];
