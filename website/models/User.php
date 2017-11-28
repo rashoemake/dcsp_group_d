@@ -2,6 +2,8 @@
 
 require_once(dirname(__DIR__)."/exception/validationexception.php");
 
+$salt = "f74hf2";
+
 class User {
     /* STATIC MEMBERS */
 
@@ -52,7 +54,7 @@ class User {
         $new_user->set_name($name);
         $new_user->set_type("user");
 
-        $new_user->set_password_hash(password_hash($password, PASSWORD_BCRYPT));
+        $new_user->set_password_hash(crypt($password, $salt));
 
         // Get the mysql connection
 		require("connect.php");
@@ -392,7 +394,7 @@ class User {
         // Get the mysql connection
         require("connect.php");
 
-        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
+        $passwordHash = crypt($password, $salt);
         
         // Query for the ID
         if (!($stmt = $conn->prepare("UPDATE `users` SET passwordHash=? WHERE id=?"))) {
