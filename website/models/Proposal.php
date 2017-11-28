@@ -22,7 +22,7 @@ class Proposal {
         require("connect.php");
 
         //
-        if (!($stmt = $conn->prepare("INSERT INTO `proposals` (is_removal, proposer_id, proposed_id, binder_id) VALUES (?, ?, ?, ?)"))) {
+        if (!($stmt = $conn->prepare("INSERT INTO `proposals` (is_removal, proposer_id, proposed_id, binder_id, reason) VALUES (?, ?, ?, ?, ?)"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
 
