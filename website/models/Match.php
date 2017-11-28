@@ -25,6 +25,25 @@ class Match {
         return $conn->insert_id;
     }
 
+    public static function get_match_by_id($match_id) {
+        require("connect.php");
+
+        //Query for the ID
+        if (!($stmt = $conn->prepare("SELECT * FROM `matches` WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param("i", $match_id);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        $row = $stmt->get_result()->fetch_assoc();
+        $return_value = new Match();
+        $return_value->from_assoc($row);
+        return $return_value;
+    }
+
     public static function get_unanswered_match($user_id) {
         // Return any Users that have already matched $user_id
         // Get the mysql connection
@@ -47,11 +66,13 @@ class Match {
             $return_value->from_assoc($result->fetch_assoc());
             return $return_value;
         }
+
+        return NULL;
     }
 
     public static function suggest_user($user_id) {
         require("connect.php");
-        require("User.php");
+        require_once("User.php");
 
         // Returns a random user from the same University as $user_id
         if (!($stmt = $conn->prepare("SELECT * FROM `users` WHERE university_id IN (SELECT university_id FROM `users` WHERE id=?) AND id != ? LIMIT 1"))) {
@@ -126,6 +147,10 @@ class Match {
 
     public function get_modified_date() {
         return $this->modifiedDate;
+    }
+
+    public function set_modified_date($modified_date) {
+        $this->modified_date = $modified_date;
     }
 
 
