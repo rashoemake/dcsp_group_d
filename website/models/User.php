@@ -282,7 +282,7 @@ class User {
         if (!($stmt = $conn->prepare("SELECT binder_id FROM `user_binders` WHERE user_id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
-	$id = $this->get-id();
+	    $id = $this->get_id();
         $stmt->bind_param('i', $id);
         
         if (!($stmt->execute())) {

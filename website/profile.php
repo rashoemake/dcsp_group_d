@@ -1,18 +1,12 @@
 <?php
     session_start();
     require_once "models/University.php";
-    require_once "models/Proposal.php";
 
     $foreign_view=false;
     if (isset($_GET['user_id'])) {
         if ($_GET['user_id']!=$_SESSION['id']) {
             $foreign_view=true;
         }
-    }
-    
-    if (isset($_POST["suggest_binder"])) {
-        $proposal_id = Proposal::create_proposal(false, $_SESSION["id"], $_GET["user_id"], $_POST["suggest_binder"]);
-        $proposal_created = true;
     }
 
     if (isset($_SESSION["logged_in"])) {
@@ -95,34 +89,7 @@
         
         <br>        
         <p class="text-left">User ID: <?php echo $user_id ?></p>
-        <br>
-        <?php
-            if (isset($_GET["show_suggest"])) {
-                if (!(isset($proposal_created))) {
-                    echo '<form method="post" action="profile.php?user_id='.$user_id.'&show_suggest='.true.'">';
-                    echo '<select class="form-control" name="suggest_binder" id="suggest_binder">';
-                    $self_user = User::get_user_by_id($_SESSION["id"]);
-                    $self_user_binders = $self_user->get_binders();
-                    if (!(empty($self_user_binders))) {
-                        foreach ($self_user_binders as $binder_id) {
-                            $binder = Binder::get_binder_by_id($binder_id);
-                            echo '<option value="'.$binder->get_id().'">'.$binder->get_name().'</option>';
-                        }
-                        echo '</select><br>';
-                        echo '<button class="btn btn-primary" type="submit">Suggest</button>';
-                    }
-                    else {
-                        echo '<option value="'.Null.'">None</option>';
-                        echo '</select><br>';
-                        echo '<button class="btn btn-primary" type="submint" disabled>Suggest</button>';
-                    }
-                    echo '</form>';
-                }
-                else {
-                    echo '<h4>Your proposal was successful.';
-                }
-            }
-        ?>
+        
       </div>
     </div>
     
