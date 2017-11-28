@@ -53,11 +53,30 @@ class Match {
         require("connect.php");
         require("User.php");
 
+        $query = "SELECT *
+                  FROM `users`
+                  WHERE university_id IN (
+                      SELECT university_id
+                      FROM `users`
+                      WHERE id=?)
+                  AND id NOT IN (
+                      SELECT user1_id 
+                      FROM `matches` 
+                      WHERE user1_id=? OR user2_id=? 
+  
+                      UNION 
+                      
+                      SELECT user2_id 
+                      FROM `matches` 
+                      WHERE user1_id=? OR user2_id=?) 
+                  LIMIT 1";
+
+
         // Returns a random user from the same University as $user_id
-        if (!($stmt = $conn->prepare("SELECT * FROM `users` WHERE university_id IN (SELECT university_id FROM `users` WHERE id=?) AND id != ? LIMIT 1"))) {
+        if (!($stmt = $conn->prepare($query))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-        $stmt->bind_param("ii", $user_id, $user_id);
+        $stmt->bind_param("iiii", $user_id, $user_id, $user_id, $user_id);
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
