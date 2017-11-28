@@ -139,7 +139,7 @@
                                         if (isset($binder_created)) {
                                             echo '<h4 class="text-center">'.$user2->get_name().' matched you too!</h4>';
                                             echo '<h4 class="text-center">Binder '.$binder->get_name().' was created!</h4>';
-                                            echo '<form method="get"><a href="edit-binder.php?binder_id='.$binder->get_id().'" value="Set Info" class="btn btn-primary pull-right col-md-3 button-text">Set Binder Info</a>';
+                                            echo '<form method="get"><a href="edit-binder.php?binder_id='.$binder->get_id().'" value="Set Info" class="btn btn-primary pull-right col-md-3 button-text">Set Info</a>';
                                         }
                                         else {
                                             echo '<a href="bindr-index.php" value="Home" class="btn btn-primary col-md-4 col-md-offset-4 button-text">Home</a>';
