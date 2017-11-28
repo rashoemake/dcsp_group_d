@@ -2,9 +2,22 @@
     session_start();
     require_once "models/University.php";
 
+    $foreign_view=false;
+    if (isset($_GET['user_id'])) {
+        if ($_GET['user_id']!=$_SESSION['id']) {
+            $foreign_view=true;
+        }
+    }
+    
     if (isset($_SESSION["logged_in"])) {
         require_once 'models/User.php';
-        $this_user = User::get_user_by_id($_SESSION["id"]);
+        
+        if ($foreign_view) {
+            $this_user = User::get_user_by_id($_GET["user_id"]);
+        } else {
+            $this_user = User::get_user_by_id($_SESSION["id"]);
+        }
+        
         if ($_SESSION["type"] == "admin") {
             header('Location: admin-profile.php');
             exit();
@@ -15,6 +28,7 @@
         $user_school = University::get_university_by_id($user_school_id);
         $user_bio = $this_user->get_biography();
         $user_binders = $this_user->get_binders();
+        $user_id = $this_user->get_id();
     } else {
         header('Location: index.php');
         exit();
@@ -58,30 +72,39 @@
         <h4 class="text-left">Biography:</h4>
         <p><?php echo $user_bio ?></p>
         
-        <!-- binder associations
-        <h4 class="text-left">Binders:</h4>
-        <ul class="list-unstyled">
-        <?php  /*  
-        require_once 'models/Binder.php';
-            foreach($user_binders as $binder) {
-                $tmp=Binder::get_binder_by_id($binder);
-                echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">'.$tmp->get_name().'</a></li>';
-            
-           }
-         */
+        <?php 
+        if ($foreign_view) {
+            echo '<h4 class="text-left">Binders:</h4>';
+            echo '<ul class="list-unstyled">';
+
+            require_once 'models/Binder.php';
+                foreach($user_binders as $binder) {
+                    $tmp=Binder::get_binder_by_id($binder);
+                    echo '<li><a href="home.php?binder_id='.$tmp->get_id().'">'.$tmp->get_name().'</a></li>';
+
+               }          
+            echo '</ul>';  
+        } else {}        
         ?>
-        </ul>
-         -->
         
         <br>        
-        <p class="text-left">User ID: <?php echo $_SESSION['id'] ?></p>
+        <p class="text-left">User ID: <?php echo $user_id ?></p>
       </div>
     </div>
     
-    <div class="text-center">
+    <?php 
+    if ($foreign_view) {
+        echo "";
+    } else {
+        echo<<<_END
+        <div class="text-center">
         <a class="btn btn-primary" href="edit-profile.php">Edit Profile</a>
-    </div>
-
+        </div>
+_END;
+    }
+    ?>
+    
+    
 
     </div> <!-- end document container -->
   </body>  
