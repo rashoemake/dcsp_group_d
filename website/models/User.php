@@ -2,8 +2,6 @@
 
 require_once(dirname(__DIR__)."/exception/validationexception.php");
 
-$salt = "f74hf2";
-
 class User {
     /* STATIC MEMBERS */
 
@@ -54,7 +52,7 @@ class User {
         $new_user->set_name($name);
         $new_user->set_type("user");
 
-        $new_user->set_password_hash(crypt($password, $salt));
+        $new_user->set_password_hash(crypt($password));
 
         // Get the mysql connection
 		require("connect.php");
@@ -284,7 +282,8 @@ class User {
         if (!($stmt = $conn->prepare("SELECT binder_id FROM `user_binders` WHERE user_id=?"))) {
             header('HTTP/1.1 500 Internal Server Error');
         }
-        $stmt->bind_param('i', $this->get_id());
+	$id = $this->get-id();
+        $stmt->bind_param('i', $id);
         
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -394,7 +393,7 @@ class User {
         // Get the mysql connection
         require("connect.php");
 
-        $passwordHash = crypt($password, $salt);
+        $passwordHash = crypt($password);
         
         // Query for the ID
         if (!($stmt = $conn->prepare("UPDATE `users` SET passwordHash=? WHERE id=?"))) {
