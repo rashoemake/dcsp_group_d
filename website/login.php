@@ -14,7 +14,7 @@
 			if ($_POST["password"] != "") {
 				$user = User::get_user_by_email($_POST["email"]);
 				if ($user != Null) {
-					if (password_verify($_POST["password"], $user->get_password_hash())) {
+					if (crypt($_POST["password"], $user->get_password_hash()) == $user->get_password_hash()) {
 						if ($user->get_disabled() == true) {
 							$disabled = true;
 						}

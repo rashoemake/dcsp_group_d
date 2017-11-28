@@ -96,7 +96,7 @@
                                         }
                                         if ($sug_match != Null) {
                                             $school = University::get_university_by_id($sug_match->get_university_id());
-                                            echo '<h1 class="text-center">'.$sug_match->get_name().'</h1><br>';
+                                            echo '<a href="profile.php?user_id='.$sug_match->get_id().'&show_suggest='.true.'"><h1 class="text-center">'.$sug_match->get_name().'</h1></a><br>';
                                             echo '<h3 class="text-center">School: '.$school->get_name().'<h3></li>';
                                             echo '<h3 class="text-center">Bio: '.$sug_match->get_biography().'</h3></li><br>';
                                         }
