@@ -76,6 +76,17 @@ $account_err="";
             .error-message {
                 color: #ff0000;
             }
+            th, td {
+                padding: 10px;
+                text-align: center;
+                font-size: 20px;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            table, td, th {
+                border: 1px solid black;
+            }
         </style>
                
 	</head>
@@ -84,43 +95,61 @@ $account_err="";
         <?php require_once 'php_scripts/navbar.php' ?>     
         <br>
         <h3 class="text-center">Administration Page</h3>
-        <h3>Add School</h3>
-        <form method="post" action="admin-profile.php">
-            
-            <h4 class="field-label">Name</h4>
-            <input type="text" name="school-name" id="school-name" class="info-input" value="<?php echo $school_name ?>">
-            <br>
-            <h4 class="field-label">City</h4>
-            <input type="text" name="school-city" id="school-city" class="info-input" value="<?php echo $school_city ?>">
-            <br>
-            <h4 class="field-label">State</h4>
-            <input type="text" name="school-state" id="school-state" class="info-input" value="<?php echo $school_state ?>">
-            <br>            
-            <input type="submit" value="Submit">
-            <input type="reset" value="Reset"><span class="error-message"><?php echo $school_err ?></span>
-        </form>
-        
-        <h3>Enable/Disable Account</h3>
-        <form method="post" action="admin-profile.php">
-            <h4 class="field-label">User ID</h4>
-            <input type="text" name="user_id" id="user_id" class="info-input"><span class="error-message"><?php echo $account_err ?></span>
-            <br>
-            Disable&nbsp;<input type="radio" name="account_action" value="disable" checked="checked">&nbsp;
-            Enable&nbsp;<input type="radio" name="account_action" value="enable">
-            <br>
-            <input type="submit" value="Submit">
-        </form>
-        
-        <h3>Enable/Disable Binder</h3>
-        <form method="post" action="admin-profile.php">
-            <h4 class="field-label">Binder ID</h4>
-            <input type="text" name="binder_id" id="binder_id" class="info-input"><span class="error-message"><?php echo $account_err ?></span>
-            <br>
-            Disable&nbsp;<input type="radio" name="binder_action" value="disable" checked="checked">&nbsp;
-            Enable&nbsp;<input type="radio" name="binder_action" value="enable">
-            <br>
-            <input type="submit" value="Submit">
-        </form>
+        <div class="row">
+            <div class="col-sm-4">
+                <h3>Add School</h3>
+                <form method="post" action="admin-profile.php">
 
+                    <h4 class="field-label">Name</h4>
+                    <input type="text" name="school-name" id="school-name" class="info-input" value="<?php echo $school_name ?>">
+                    <br>
+                    <h4 class="field-label">City</h4>
+                    <input type="text" name="school-city" id="school-city" class="info-input" value="<?php echo $school_city ?>">
+                    <br>
+                    <h4 class="field-label">State</h4>
+                    <input type="text" name="school-state" id="school-state" class="info-input" value="<?php echo $school_state ?>">
+                    <br>            
+                    <input type="submit" value="Submit">
+                    <input type="reset" value="Reset"><span class="error-message"><?php echo $school_err ?></span>
+                </form>                
+
+                <h3>Enable/Disable Account</h3>
+                <form method="post" action="admin-profile.php">
+                    <h4 class="field-label">User ID</h4>
+                    <input type="numbert" name="user_id" id="user_id"><span class="error-message"><?php echo $account_err ?></span>
+                    <br>
+                    Disable&nbsp;<input type="radio" name="account_action" value="disable" checked="checked">&nbsp;
+                    Enable&nbsp;<input type="radio" name="account_action" value="enable">
+                    <br>
+                    <input type="submit" value="Submit">
+                </form>
+
+                <h3>Enable/Disable Binder</h3>
+                <form method="post" action="admin-profile.php">
+                    <h4 class="field-label">Binder ID</h4>
+                    <input type="number" name="binder_id" id="binder_id"><span class="error-message"><?php echo $account_err ?></span>
+                    <br>
+                    Disable&nbsp;<input type="radio" name="binder_action" value="disable" checked="checked">&nbsp;
+                    Enable&nbsp;<input type="radio" name="binder_action" value="enable">
+                    <br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <h3>School List</h3>
+                <table>
+                    <tr><th>ID</th><th>School Name</th></tr>
+                   <?php
+                        $university_ids = University::get_all_university();
+                        foreach($university_ids as $school) {
+                            $school = University::get_university_by_id($school);
+                            echo "<tr><td>".$school->get_id()."</td><td>".$school->get_name()."</td></tr>";
+                        }
+                   ?>
+                </table>
+            </div>
+        </div>
+    </div>
     </body>
 </html>
