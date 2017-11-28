@@ -1,6 +1,7 @@
 <?php
   $message=$message_err="";
   session_start();
+  require_once 'models/Proposal.php';
 
   if (!(isset($_SESSION["logged_in"]))) {
       header("Location: index.php");
@@ -30,6 +31,10 @@
           $message_err = $ex->get_msg();
       }
   }
+  
+    if (isset($_POST['proposed_id'])) {
+        Proposal::create_proposal(0, $_SESSION['id'], $_POST['proposed_id'], $this_binder->get_id(), $_POST['proposed_reason']);
+    }
       
   } else {
       die('$_GET[binder_id] is not set');
@@ -91,7 +96,7 @@
         <div class="col-sm-2" style="background-color: #9fffe0;">
           <ul class="list-unstyled">
             <li><h4 class="text-center" style="border-bottom: 1px solid black;">Navigation</h4></li>
-            <li class="nav-padding"><a class="nav-text" href="#">Propose User to Binder</a></li>
+            <li class="nav-padding"><a class="nav-text" href="#" data-toggle="modal" data-target="#proposal_modal">Propose User to Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="<?php echo "edit-binder.php?binder_id=".$this_binder->get_id() ?>">Edit this Binder</a></li>
             <li class="nav-padding"><a class="nav-text" href="#message">Post a message</a></li>
             <li class="nav-padding"><a class="nav-text" href="#" data-toggle="modal" data-target="#leave_modal">Leave this Binder</a></li>
@@ -135,6 +140,28 @@
           </div> <!-- end content panel -->
         </div> <!-- end col-sm-10 -->
       </div> <!-- end row -->
+      
+      <!-- binder proposals -->
+      <div class="panel panel-default">
+          <div class="panel-body panel-content-color">
+              <h3>Proposals</h3>
+              <?php
+                $binder_proposals = Proposal::get_proposal_by_binder($this_binder->get_id());
+                if (!(empty($binder_proposals))) {
+                    foreach($binder_proposals as $proposal) {
+                        echo '<p>'.match_user_id($proposal->get_proposer_id()).' has proposed: &nbsp;&nbsp;&nbsp;'
+                                .'<a href="profile.php?user_id='.$proposal->get_proposed_id().'">'.match_user_id($proposal->get_proposed_id()).'</a></p>';
+                        echo '<p>Reason:<br>'.$proposal->get_reason().'</p>';
+                        echo "<a class='btn btn-primary btn-xs' href='voting.php?action=approve&proposed_id=".$proposal->get_proposed_id()."'>Approve!</a>&nbsp;&nbsp;&nbsp;";
+                        echo "<a class='btn btn-danger btn-xs' href='voting.php?action=reject&proposed_id=".$proposal->get_proposed_id()."'>Reject!</a>";
+                    }
+                } else {
+                    echo "<h4>No pending proposals! Use the button below to start one.</h4>";
+                }
+              ?>
+              <a class="btn btn-primary pull-right" href="#" data-toggle="modal" data-target="#proposal_modal">Propose User to Binder</a>
+          </div>
+      </div>
       
       <!-- messages retrieved from the database -->
       <div class="panel panel-default">
@@ -188,6 +215,31 @@
                           <input type="submit" class="btn btn-danger pull-left" value="Leave">
                       </form>
                       <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Propose User modal -->
+      <div id="proposal_modal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Propose a User!</h4>
+                  </div>
+                  <div class="modal-body">                      
+                      <form method="post" action="home.php?binder_id=<?php echo $this_binder->get_id() ?>">
+                          <h5>Enter the ID of the User you'd like to propose:</h5>
+                          <input type="number" name="proposed_id">
+                          <br>
+                          <h5>And reason for proposal:</h5>
+                          <textarea name="proposed_reason" rows="3" style="width:100%;"></textarea>                                                                      
+                  </div>
+                  <div class="modal-footer">
+                      <input type="submit" value="Submit" class="btn btn-primary">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                      </form> 
                   </div>
               </div>
           </div>

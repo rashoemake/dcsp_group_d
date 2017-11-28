@@ -1,5 +1,7 @@
 <?php
 
+require_once(dirname(__DIR__)."/exception/validationexception.php");
+
 class Proposal {
     /* STATIC MEMBERS */
 
@@ -7,13 +9,14 @@ class Proposal {
     //public static $tablename = "proposals";
 
     // Static Methods
-    public static function create_proposal($is_removal, $proposer_id, $proposed_id, $binder_id) {
+    public static function create_proposal($is_removal, $proposer_id, $proposed_id, $binder_id, $reason) {
         // TODO
         $new_proposal = new Proposal;
         $new_proposal->set_is_removal($is_removal);
         $new_proposal->set_proposer_id($proposer_id);
         $new_proposal->set_proposed_id($proposed_id);
         $new_proposal->set_binder_id($binder_id);
+        $new_proposal->set_reason($reason);
 
         //Get mysql connection
         require("connect.php");
@@ -22,7 +25,9 @@ class Proposal {
         if (!($stmt = $conn->prepare("INSERT INTO `proposals` (is_removal, proposer_id, proposed_id, binder_id) VALUES (?, ?, ?, ?)"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-        $stmt->bind_param("iiii", intval($new_proposal->get_is_removal()), $new_proposal->get_proposer_id(), $new_proposal->get_proposed_id(), $new_proposal->get_binder_id());
+
+        $stmt->bind_param("iiiis", intval($new_proposal->get_is_removal()), $new_proposal->get_proposer_id(), $new_proposal->get_proposed_id(), $new_proposal->get_binder_id(), $new_proposal->get_reason());
+
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -47,7 +52,8 @@ class Proposal {
 		}
 
 		$row = $stmt->get_result()->fetch_assoc();
-		$return_value = Proposal::from_assoc($row);
+                $return_value = new Proposal();
+		$return_value->from_assoc($row);
 		return $return_value;
     }
 
@@ -66,8 +72,16 @@ class Proposal {
 			header('HTTP/1.1 500 Internal Server Error');
 		}
 
-		$row = $stmt->get_result()->fetch_assoc();
-		$return_value = Proposal::from_assoc($row);
+                $return_value = array();
+                $results_obj = $stmt->get_result();
+                for ($i = 0; $i < $results_obj->num_rows; $i++) {
+                    $results_obj->data_seek($i);
+                    $result = $results_obj->fetch_assoc();
+                    $return_value[$i] = Proposal::get_proposal_by_id($result['id']);
+                    $return_value[$i]->from_assoc($result);
+                }
+//		$row = $stmt->get_result()->fetch_assoc();
+//		$return_value = Proposal::from_assoc($row);
 		return $return_value;
     }
 
@@ -183,7 +197,9 @@ class Proposal {
     }
 
     public function set_is_removal($is_removal){
-        if (is_bool($is_removal)){
+
+        if (is_bool($is_removal) || preg_match("/^(0|1)$/", $is_removal)){
+
             $this->is_removal = $is_removal;
         } else {
             throw new ValidationException("INVALID", "is_removal");
@@ -215,6 +231,22 @@ class Proposal {
 		return $return_value;
 
     }
+
+    
+    public function update_reason($reason) {
+        require_once 'connect.php';
+        
+        $this->set_reason($reason);
+        if (!($stmt = $conn->prepare("UPDATE `proposals` SET reason=? WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param('si', $this->get_reason(), $this->get_id());
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        
+    }
+
     public function get_response_ids() {
         // TODO
         require("connect.php");
@@ -224,6 +256,7 @@ class Proposal {
 			header('HTTP/1.1 500 Internal Server Error');	
 		}
 		$stmt->bind_param("i", $this->id);
+
 
 		if (!($stmt->execute())) {
 			header('HTTP/1.1 500 Internal Server Error');
@@ -265,7 +298,7 @@ class Proposal {
         }
 
         if (isset($assoc["modifiedDate"])){
-            $this->set_modifiedDate($assoc["modifiedDate"]);
+            $this->modifiedDate = $assoc["modifiedDate"];
         }
     }
 	
