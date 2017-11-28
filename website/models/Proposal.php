@@ -19,10 +19,10 @@ class Proposal {
         require("connect.php");
 
         //
-        if (!($stmt = $conn->prepare("INSERT INTO `proposals` (is_removal, proposer_id, proposed_id, binder_id, reason) VALUES (?, ?, ?, ?, ?)"))) {
+        if (!($stmt = $conn->prepare("INSERT INTO `proposals` (is_removal, proposer_id, proposed_id, binder_id) VALUES (?, ?, ?, ?)"))) {
             header('HTTP/1.1 500 Internal Server Error');	
         }
-        $stmt->bind_param("iiiis", intval($new_proposal->get_is_removal()), $new_proposal->get_proposer_id(), $new_user->get_proposed_id(), $new_user->get_reason());
+        $stmt->bind_param("iiii", intval($new_proposal->get_is_removal()), $new_proposal->get_proposer_id(), $new_proposal->get_proposed_id(), $new_proposal->get_binder_id());
 
         if (!($stmt->execute())) {
             header('HTTP/1.1 500 Internal Server Error');
@@ -71,12 +71,29 @@ class Proposal {
 		return $return_value;
     }
 
+    public static function get_proposal_exact($proposer_id, $proposed_id, $binder_id) {
+        require("connect.php");
+
+        if (!($stmt = $conn->prepare("SELECT * FROM `proposals` WHERE proposer_id=? AND proposed_id=? AND binder_id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param("iii", $proposer_id, $proposed_id, $binder_id);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+
+        $row = $stmt->get_result()->fetch_assoc();
+        $return_value = Proposal::from_assoc($row);
+        return $return_value;
+    }
+
 
     /* INSTANCE MEMBERS */
 
     // Instance Variables
     private $id;
-    private $reason
+    private $reason;
     private $proposer_id;
     private $proposed_id;
     private $binder_id;
@@ -99,14 +116,14 @@ class Proposal {
 
     public function get_proposer_id() {
         // TODO
-        return($this->proposer_id)
+        return($this->proposer_id);
     }
 
     private function set_proposer_id($id) {
         // TODO
         
         if (is_numeric($id)) {
-            $this->id = $id;
+            $this->proposer_id = $id;
         } else {
             throw new ValidationException("INVALID", "proposer_id");
         }
@@ -167,7 +184,7 @@ class Proposal {
 
     public function set_is_removal($is_removal){
         if (is_bool($is_removal)){
-            $this->id = $id;
+            $this->is_removal = $is_removal;
         } else {
             throw new ValidationException("INVALID", "is_removal");
         }
@@ -175,7 +192,7 @@ class Proposal {
     // Instance Methods
 
     public function get_responses() {
-        // TODO
+        // TODO            if (!(isset($proposal_created))) {
         require("connect.php");
 		
 		// Query for the ID
