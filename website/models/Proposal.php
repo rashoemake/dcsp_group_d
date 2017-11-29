@@ -102,6 +102,18 @@ class Proposal {
         return $return_value;
     }
 
+    public static function delete_proposal_by_id($id) {
+        require("connect.php");
+
+        if (!($stmt = $conn->prepare("DELETE FROM `proposals` WHERE id=?"))) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        $stmt->bind_param("i", $id);
+
+        if (!($stmt->execute())) {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+    }
 
     /* INSTANCE MEMBERS */
 

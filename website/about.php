@@ -25,7 +25,7 @@
 		<h3>Developers</h3>
 		<ul>
 			<li>Chandler Musgrove (<a href="mailto:">TODO</a>) - Backend/Database Design</li>
-			<li>Corey Clayton (<a href="mailto:">TODO</a>) - Frontend/Business Logic Integration</li>
+			<li>Corey Clayton (<a href="mailto:cdc611@msstate.edu">cdc611@msstate.edu</a>) - Frontend/Business Logic Integration</li>
 			<li>Ryan Shoemake (<a href="mailto:ras603@msstate.edu">ras603@msstate.edu</a>) - Frontend/Business Logic Integration</li>
 			<li>Will Carroll (<a href="mailto:woc17@msstate.edu">woc17@msstate.edu</a>) - Backend/Database Design</li>
 		</ul>

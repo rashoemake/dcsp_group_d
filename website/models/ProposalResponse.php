@@ -5,7 +5,7 @@ class ProposalResponse {
 	
 	// Static Methods
 	public static function create_response($proposal_id, $user_id, $response) {
-		$new_response = new Response();
+		$new_response = new ProposalResponse();
 		$new_response->set_proposal_id($proposal_id);
 		$new_response->set_user_id($user_id);
 		$new_response->set_response($response);
@@ -45,7 +45,71 @@ class ProposalResponse {
 		$return_value->from_assoc($row);
 		return $return_value;
 	}
+
+	public static function get_number_approve($proposal_id) {
+		require("connect.php");
+		
+		if (!($stmt = $conn->prepare("SELECT count(id) FROM `proposal_responses` WHERE response=1 AND proposal_id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+		$stmt->bind_param("i", $proposal_id);
+
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
+		$row = $stmt->get_result()->fetch_array();
+		$return_value = $row[0];
+		return $return_value;
+	}
+
+	public static function get_number_disapprove($proposal_id) {
+		require("connect.php");
+		
+		if (!($stmt = $conn->prepare("SELECT count(id) FROM `proposal_responses` WHERE response=0 AND proposal_id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+		$stmt->bind_param("i", $proposal_id);
+
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
+		$row = $stmt->get_result()->fetch_array();
+		$return_value = $row[0];
+		return $return_value;
+	}
+
+	public static function remove_responses_by_proposal_id($proposal_id) {
+		require("connect.php");
+
+		if (!($stmt = $conn->prepare("DELETE FROM `proposal_responses` WHERE proposal_id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+		$stmt->bind_param("i", $proposal_id);
+
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+	}
 	
+	public static function get_response_by_user_and_id($user_id, $proposal_id) {
+		require("connect.php");
+
+		if (!($stmt = $conn->prepare("SELECT * FROM `proposal_responses` WHERE proposal_id=? AND user_id=?"))) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+		$stmt->bind_param("ii", $proposal_id, $user_id);
+
+		if (!($stmt->execute())) {
+			header('HTTP/1.1 500 Internal Server Error');
+		}
+
+		$row = $stmt->get_result()->fetch_assoc();
+		$return_value = new ProposalResponse();
+		$return_value->from_assoc($row);
+		return $return_value;
+	}
 	
 	/* INSTANCE MEMBERS */
 	
