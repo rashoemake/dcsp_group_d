@@ -83,7 +83,7 @@
             exit();
         }
         
-        if (!(in_array($_SESSION['id'], $members))) {
+        if (!(in_array($_SESSION['id'], $members)) && $_SESSION['type'] != 'admin') {
             echo "<h3>You are not a member of \"". $this_binder->get_name() ."\"</h3>";
             exit();
         }
